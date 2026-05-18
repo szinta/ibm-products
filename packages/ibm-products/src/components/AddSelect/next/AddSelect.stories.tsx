@@ -27,7 +27,7 @@ export default {
     Column: AddSelect.Column,
     Row: AddSelect.Row,
     SelectionSummary: AddSelect.SelectionSummary,
-    SelectionSummaryPanelItem: AddSelect.SelectionSummaryPanelItem,
+    SelectionSummaryItem: AddSelect.SelectionSummaryItem,
     ItemInfoPanel: AddSelect.ItemInfoPanel,
   },
   argTypes: {

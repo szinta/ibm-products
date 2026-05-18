@@ -12,7 +12,7 @@ export type { AddSelectContentProps } from './AddSelectContent';
 export type { AddSelectColumnProps } from './AddSelectColumn';
 export type { AddSelectRowProps } from './AddSelectRow';
 export type { AddSelectSelectionSummaryProps } from './AddSelectSelectionSummary';
-export type { AddSelectSelectionSummaryPanelItemProps } from './AddSelectSelectionSummaryPanelItem';
+export type { AddSelectSelectionSummaryItemProps } from './AddSelectSelectionSummaryItem';
 export type {
   AddSelectItemInfoPanelProps,
   ItemDetailEntry,

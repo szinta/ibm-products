@@ -15,11 +15,11 @@ import { blockClass } from './context';
 
 /**
  * ----------------
- * AddSelectSelectionSummaryPanelItem
+ * AddSelectSelectionSummaryItem
  * ----------------
  */
 
-export interface AddSelectSelectionSummaryPanelItemProps {
+export interface AddSelectSelectionSummaryItemProps {
   /**
    * Item data
    */
@@ -59,19 +59,19 @@ export interface AddSelectSelectionSummaryPanelItemProps {
 }
 
 /**
- * AddSelectSelectionSummaryPanelItem - Individual selected item display
+ * AddSelectSelectionSummaryItem - Individual selected item display
  * @example
  * ```jsx
- * <AddSelect.SelectionSummaryPanelItem
+ * <AddSelect.SelectionSummaryItem
  *   item={item}
  *   useAccordion
  *   onRemove={handleRemove}
  * />
  * ```
  */
-const AddSelectSelectionSummaryPanelItem = forwardRef<
+const AddSelectSelectionSummaryItem = forwardRef<
   HTMLDivElement,
-  AddSelectSelectionSummaryPanelItemProps
+  AddSelectSelectionSummaryItemProps
 >(
   (
     {
@@ -88,13 +88,11 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const itemClasses = cx(
-      `${blockClass}__selection-summary-panel-item`,
+      `${blockClass}__selection-summary-item`,
       {
-        [`${blockClass}__selection-summary-panel-item--accordion`]:
-          useAccordion,
-        [`${blockClass}__selection-summary-panel-item--simple`]: !useAccordion,
-        [`${blockClass}__selection-summary-panel-item--template`]:
-          renderTemplate,
+        [`${blockClass}__selection-summary-item--accordion`]: useAccordion,
+        [`${blockClass}__selection-summary-item--simple`]: !useAccordion,
+        [`${blockClass}__selection-summary-item--template`]: renderTemplate,
       },
       className
     );
@@ -108,7 +106,7 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
           onRemove(item.id);
         }}
         kind="ghost"
-        className={`${blockClass}__selection-summary-panel-item-remove-button`}
+        className={`${blockClass}__selection-summary-item-remove-button`}
       >
         <SubtractAlt size={16} />
       </IconButton>
@@ -116,26 +114,20 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
 
     // Default title rendering
     const defaultTitle = (
-      <div
-        className={`${blockClass}__selection-summary-panel-item-title-wrapper`}
-      >
-        <div
-          className={`${blockClass}__selection-summary-panel-item-selected-item`}
-        >
-          <p className={`${blockClass}__selection-summary-panel-item-title`}>
+      <div className={`${blockClass}__selection-summary-item-title-wrapper`}>
+        <div className={`${blockClass}__selection-summary-item-selected-item`}>
+          <p className={`${blockClass}__selection-summary-item-title`}>
             {item.title}
           </p>
           {item.subtitle && (
-            <p
-              className={`${blockClass}__selection-summary-panel-item-subtitle`}
-            >
+            <p className={`${blockClass}__selection-summary-item-subtitle`}>
               {item.subtitle}
             </p>
           )}
         </div>
         {!useAccordion && onRemove && (
           <div
-            className={`${blockClass}__selection-summary-panel-item-remove-button-container`}
+            className={`${blockClass}__selection-summary-item-remove-button-container`}
           >
             {RemoveButton}
           </div>
@@ -155,15 +147,11 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
       return (
         <>
           {value && (
-            <div
-              className={`${blockClass}__selection-summary-panel-item-entry`}
-            >
-              <p
-                className={`${blockClass}__selection-summary-panel-item-header`}
-              >
+            <div className={`${blockClass}__selection-summary-item-entry`}>
+              <p className={`${blockClass}__selection-summary-item-header`}>
                 value
               </p>
-              <p className={`${blockClass}__selection-summary-panel-item-body`}>
+              <p className={`${blockClass}__selection-summary-item-body`}>
                 {value}
               </p>
             </div>
@@ -171,14 +159,12 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
           {entries.map(([key, val]) => (
             <div
               key={key}
-              className={`${blockClass}__selection-summary-panel-item-entry`}
+              className={`${blockClass}__selection-summary-item-entry`}
             >
-              <p
-                className={`${blockClass}__selection-summary-panel-item-header`}
-              >
+              <p className={`${blockClass}__selection-summary-item-header`}>
                 {key}
               </p>
-              <p className={`${blockClass}__selection-summary-panel-item-body`}>
+              <p className={`${blockClass}__selection-summary-item-body`}>
                 {String(val)}
               </p>
             </div>
@@ -209,12 +195,12 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
             <AccordionItem
               title={
                 <div
-                  className={`${blockClass}__selection-summary-panel-item-title-wrapper`}
+                  className={`${blockClass}__selection-summary-item-title-wrapper`}
                 >
                   {titleContent}
                   {onRemove && (
                     <div
-                      className={`${blockClass}__selection-summary-panel-item-remove-button-container`}
+                      className={`${blockClass}__selection-summary-item-remove-button-container`}
                     >
                       {RemoveButton}
                     </div>
@@ -232,11 +218,9 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
     // Priority 3: Non-accordion mode (default key-value rendering only)
     return (
       <div className={itemClasses} ref={ref} {...rest}>
-        <div className={`${blockClass}__selection-summary-panel-item-simple`}>
+        <div className={`${blockClass}__selection-summary-item-simple`}>
           {defaultTitle}
-          <div
-            className={`${blockClass}__selection-summary-panel-item-content`}
-          >
+          <div className={`${blockClass}__selection-summary-item-content`}>
             {defaultContent()}
           </div>
         </div>
@@ -245,7 +229,7 @@ const AddSelectSelectionSummaryPanelItem = forwardRef<
   }
 );
 
-AddSelectSelectionSummaryPanelItem.propTypes = {
+AddSelectSelectionSummaryItem.propTypes = {
   className: PropTypes.string,
   /**@ts-ignore */
   item: PropTypes.object.isRequired,
@@ -261,7 +245,6 @@ AddSelectSelectionSummaryPanelItem.propTypes = {
   useAccordion: PropTypes.bool,
 };
 
-AddSelectSelectionSummaryPanelItem.displayName =
-  'AddSelectSelectionSummaryPanelItem';
+AddSelectSelectionSummaryItem.displayName = 'AddSelectSelectionSummaryItem';
 
-export default AddSelectSelectionSummaryPanelItem;
+export default AddSelectSelectionSummaryItem;

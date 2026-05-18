@@ -240,7 +240,7 @@ export const MultiAddSelectWithHierarchy = () => {
                 }
               >
                 {selectedItems.map((item) => (
-                  <AddSelect.SelectionSummaryPanelItem
+                  <AddSelect.SelectionSummaryItem
                     key={item.id}
                     item={item}
                     onRemove={handleRemoveItem}

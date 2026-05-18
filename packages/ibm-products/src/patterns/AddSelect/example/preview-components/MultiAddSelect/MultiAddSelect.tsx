@@ -197,7 +197,7 @@ export const StandardMultiAddSelect = () => {
                 }
               >
                 {selectedItems.map((item) => (
-                  <AddSelect.SelectionSummaryPanelItem
+                  <AddSelect.SelectionSummaryItem
                     key={item.id}
                     item={item}
                     onRemove={handleRemoveItem}

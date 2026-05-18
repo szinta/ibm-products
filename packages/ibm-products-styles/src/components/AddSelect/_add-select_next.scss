@@ -496,9 +496,9 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
 }
 
 // ──────────────────────────────────────────────────────────────
-// AddSelectSelectionSummaryPanelItem - Individual selected item
+// AddSelectSelectionSummaryItem - Individual selected item
 // ──────────────────────────────────────────────────────────────
-.#{$block-class__next}__selection-summary-panel-item {
+.#{$block-class__next}__selection-summary-item {
   position: relative;
 
   // Mode-specific variants
@@ -508,13 +508,13 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
 
   &--simple {
     // Simple mode specific styles
-    .#{$block-class__next}__selection-summary-panel-item-title-wrapper {
+    .#{$block-class__next}__selection-summary-item-title-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: $spacing-05;
     }
-    .#{$block-class__next}__selection-summary-panel-item-content {
+    .#{$block-class__next}__selection-summary-item-content {
       padding-inline: $spacing-05;
     }
   }
@@ -568,13 +568,13 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
     padding-inline-start: $spacing-05;
 
     // In accordion mode, position absolutely
-    .#{$block-class__next}__selection-summary-panel-item--accordion & {
+    .#{$block-class__next}__selection-summary-item--accordion & {
       position: absolute;
       inset-inline-end: 0;
     }
 
     // In simple mode, position in flex layout
-    .#{$block-class__next}__selection-summary-panel-item--simple & {
+    .#{$block-class__next}__selection-summary-item--simple & {
       position: relative;
       margin-inline-start: auto;
     }
