@@ -10,7 +10,7 @@
 import { LitElement, html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { carbonElement as customElement } from '@carbon/web-components/es/globals/decorators/carbon-element.js';
-import { prefix } from '../../../globals/settings';
+import { prefix } from '../../globals/settings';
 import styles from './add-select.scss?lit';
 
 const blockClass = `${prefix}--add-select__next`;

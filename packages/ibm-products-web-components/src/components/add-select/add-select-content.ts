@@ -10,7 +10,7 @@
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { carbonElement as customElement } from '@carbon/web-components/es/globals/decorators/carbon-element.js';
-import { prefix } from '../../../globals/settings';
+import { prefix } from '../../globals/settings';
 import styles from './add-select-content.scss?lit';
 
 const blockClass = `${prefix}--add-select__next-list`;

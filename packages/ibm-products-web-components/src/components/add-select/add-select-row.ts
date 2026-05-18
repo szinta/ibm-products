@@ -16,7 +16,7 @@ import '@carbon/web-components/es/components/radio-button/index.js';
 import { iconLoader } from '@carbon/web-components/es/globals/internal/icon-loader.js';
 import ChevronRight16 from '@carbon/icons/es/chevron--right/16';
 
-import { prefix } from '../../../globals/settings';
+import { prefix } from '../../globals/settings';
 import styles from './add-select-row.scss?lit';
 
 const blockClass = `${prefix}--add-select__next-row`;

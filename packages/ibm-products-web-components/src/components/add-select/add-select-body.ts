@@ -16,7 +16,7 @@ import '@carbon/web-components/es/components/search/index.js';
 import '@carbon/web-components/es/components/tag/index.js';
 import '@carbon/web-components/es/components/breadcrumb/index.js';
 import '@carbon/web-components/es/components/link/index.js';
-import { prefix } from '../../../globals/settings';
+import { prefix } from '../../globals/settings';
 import styles from './add-select-body.scss?lit';
 
 const blockClass = `${prefix}--add-select__next`;

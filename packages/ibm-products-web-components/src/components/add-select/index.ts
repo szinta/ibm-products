@@ -6,7 +6,7 @@
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import './add-select/add-select';
-import './add-select-body/add-select-body';
-import './add-select-row/add-select-row';
-import './add-select-content/add-select-content';
+import './add-select';
+import './add-select-body';
+import './add-select-row';
+import './add-select-content';
