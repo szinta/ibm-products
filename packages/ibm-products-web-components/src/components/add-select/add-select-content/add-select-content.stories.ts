@@ -8,7 +8,7 @@
  */
 
 import { html } from 'lit';
-import './add-select-list';
+import './add-select-content';
 import '../add-select/add-select';
 import '../add-select-row/add-select-row';
 import { prefix } from '../../../globals/settings';
@@ -48,7 +48,7 @@ export const Default = {
       <div class="add-select-story-variant-container">
         <h4>Single-select list</h4>
         <c4p-add-select>
-          <c4p-add-select-list>
+          <c4p-add-select-content>
             ${sampleItems.map(
               (item) => html`
                 <c4p-add-select-row
@@ -60,13 +60,13 @@ export const Default = {
                 </c4p-add-select-row>
               `
             )}
-          </c4p-add-select-list>
+          </c4p-add-select-content>
         </c4p-add-select>
       </div>
       <div class="add-select-story-variant-container">
         <h4>Multi-select list</h4>
         <c4p-add-select multi>
-          <c4p-add-select-list>
+          <c4p-add-select-content>
             ${sampleItems.map(
               (item) => html`
                 <c4p-add-select-row
@@ -78,7 +78,7 @@ export const Default = {
                 </c4p-add-select-row>
               `
             )}
-          </c4p-add-select-list>
+          </c4p-add-select-content>
         </c4p-add-select>
       </div>
     `;
@@ -86,7 +86,7 @@ export const Default = {
 };
 
 const meta = {
-  title: 'Preview/Add and select/AddSelectList',
+  title: 'Preview/Add and select/AddSelectContent',
   tags: ['autodocs'],
   decorators: [
     (story) => html` <div class="add-select-story-container">${story()}</div> `,

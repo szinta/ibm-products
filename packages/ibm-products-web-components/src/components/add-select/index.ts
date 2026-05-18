@@ -9,4 +9,4 @@
 import './add-select/add-select';
 import './add-select-body/add-select-body';
 import './add-select-row/add-select-row';
-import './add-select-list/add-select-list';
+import './add-select-content/add-select-content';

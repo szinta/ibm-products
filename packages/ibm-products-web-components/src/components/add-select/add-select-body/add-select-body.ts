@@ -24,7 +24,7 @@ const blockClass = `${prefix}--add-select__next`;
 /**
  * Add Select Body component - contains the main content area
  * @element c4p-add-select-body
- * @slot default - The main content area containing c4p-add-select-list
+ * @slot default - The main content area containing c4p-add-select-content
  * @slot header - Custom header content
  * @fires c4p-add-select-body-search - Fired when search term changes
  */

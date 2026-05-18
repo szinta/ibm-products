@@ -12,7 +12,7 @@ import { property, state } from 'lit/decorators.js';
 import { AddSelectData, AddSelectItem } from '@carbon/ibm-products-primitives';
 import './add-select';
 import '../add-select-body/add-select-body';
-import '../add-select-list/add-select-list';
+import '../add-select-content/add-select-content';
 import '../add-select-row/add-select-row';
 import styles from '../story-styles.scss?lit';
 
@@ -242,7 +242,9 @@ class InteractiveAddSelectStory extends LitElement {
             @c4p-add-select-body-search=${this.handleSearch}
             @c4p-add-select-body-breadcrumb-click=${this.handleBreadcrumbClick}
           >
-            <c4p-add-select-list> ${this.renderItems()} </c4p-add-select-list>
+            <c4p-add-select-content>
+              ${this.renderItems()}
+            </c4p-add-select-content>
           </c4p-add-select-body>
         </c4p-add-select>
       </div>

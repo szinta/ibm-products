@@ -11,17 +11,17 @@ import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { carbonElement as customElement } from '@carbon/web-components/es/globals/decorators/carbon-element.js';
 import { prefix } from '../../../globals/settings';
-import styles from './add-select-list.scss?lit';
+import styles from './add-select-content.scss?lit';
 
 const blockClass = `${prefix}--add-select__next-list`;
 
 /**
- * Add Select List component - contains the list of selectable items
- * @element c4p-add-select-list
+ * Add Select Content component - contains the list of selectable items
+ * @element c4p-add-select-content
  * @slot default - Contains c4p-add-select-row components
  */
-@customElement(`${prefix}-add-select-list`)
-class CDSAddSelectList extends LitElement {
+@customElement(`${prefix}-add-select-content`)
+class CDSAddSelectContent extends LitElement {
   /**
    * Whether this is a multi-select list (inherited from parent c4p-add-select)
    * @private
@@ -251,4 +251,4 @@ class CDSAddSelectList extends LitElement {
   static styles = styles;
 }
 
-export default CDSAddSelectList;
+export default CDSAddSelectContent;

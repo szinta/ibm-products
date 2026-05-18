@@ -10,7 +10,7 @@
 import { html } from 'lit';
 import './add-select-body';
 import '../add-select/add-select';
-import '../add-select-list/add-select-list';
+import '../add-select-content/add-select-content';
 import '../add-select-row/add-select-row';
 import { prefix } from '../../../globals/settings';
 import styles from '../story-styles.scss?lit';
@@ -97,7 +97,7 @@ export const SingleSelectionList = {
             search-results-title="Search results"
             .itemCount=${sampleItems.length}
           >
-            <c4p-add-select-list>
+            <c4p-add-select-content>
               ${sampleItems.map(
                 (item) => html`
                   <c4p-add-select-row
@@ -109,7 +109,7 @@ export const SingleSelectionList = {
                   </c4p-add-select-row>
                 `
               )}
-            </c4p-add-select-list>
+            </c4p-add-select-content>
           </c4p-add-select-body>
         </c4p-add-select>
       </div>
@@ -137,7 +137,7 @@ export const MultiSelect = {
             search-results-title="Search results"
             .itemCount=${sampleItems.length}
           >
-            <c4p-add-select-list>
+            <c4p-add-select-content>
               ${sampleItems.map(
                 (item) => html`
                   <c4p-add-select-row
@@ -149,7 +149,7 @@ export const MultiSelect = {
                   </c4p-add-select-row>
                 `
               )}
-            </c4p-add-select-list>
+            </c4p-add-select-content>
           </c4p-add-select-body>
         </c4p-add-select>
       </div>
@@ -184,7 +184,7 @@ export const WithBreadcrumbs = {
             .itemCount=${sampleItems.length}
             .path=${path}
           >
-            <c4p-add-select-list>
+            <c4p-add-select-content>
               ${sampleItems.map(
                 (item) => html`
                   <c4p-add-select-row
@@ -196,7 +196,7 @@ export const WithBreadcrumbs = {
                   </c4p-add-select-row>
                 `
               )}
-            </c4p-add-select-list>
+            </c4p-add-select-content>
           </c4p-add-select-body>
         </c4p-add-select>
       </div>

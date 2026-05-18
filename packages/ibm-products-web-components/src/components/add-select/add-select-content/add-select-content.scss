@@ -18,7 +18,7 @@ $prefix: 'c4p';
   as *;
 
 /* Web Component specific overrides */
-:host(#{$prefix}-add-select-list) {
+:host(#{$prefix}-add-select-content) {
   display: block;
 
   /* Apply shared styles within shadow DOM */

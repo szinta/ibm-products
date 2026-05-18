@@ -10,7 +10,7 @@
 import { html } from 'lit';
 import './add-select';
 import '../add-select-body/add-select-body';
-import '../add-select-list/add-select-list';
+import '../add-select-content/add-select-content';
 import '../add-select-row/add-select-row';
 import { prefix } from '../../../globals/settings';
 import styles from '../story-styles.scss?lit';
@@ -65,7 +65,7 @@ export const Default = {
           global-search-placeholder="Search items"
           .itemCount=${items.length}
         >
-          <c4p-add-select-list>
+          <c4p-add-select-content>
             ${items.map(
               (item) => html`
                 <c4p-add-select-row
@@ -77,7 +77,7 @@ export const Default = {
                 </c4p-add-select-row>
               `
             )}
-          </c4p-add-select-list>
+          </c4p-add-select-content>
         </c4p-add-select-body>
       </c4p-add-select>
     `;
