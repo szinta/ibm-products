@@ -225,7 +225,7 @@ export const MultiAddSelectWithHierarchy = () => {
                 closeIconDescription="Close details"
               />
             ) : (
-              <AddSelect.SelectionSummaryPanel
+              <AddSelect.SelectionSummary
                 title="Selected files"
                 selectedItems={selectedItems}
                 emptyState={
@@ -247,7 +247,7 @@ export const MultiAddSelectWithHierarchy = () => {
                     useAccordion={true}
                   />
                 ))}
-              </AddSelect.SelectionSummaryPanel>
+              </AddSelect.SelectionSummary>
             )}
           </Tearsheet.SummaryContent>
         </Tearsheet.Body>

@@ -445,9 +445,9 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
 }
 
 // ──────────────────────────────────────────────────────────────
-// AddSelectSelectionSummaryPanel - Selected items display
+// AddSelectSelectionSummary - Selected items display
 // ──────────────────────────────────────────────────────────────
-.#{$block-class__next}__selection-summary-panel {
+.#{$block-class__next}__selection-summary {
   display: flex;
   flex-direction: column;
 
@@ -482,6 +482,16 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
   &-item-simple {
     padding: $spacing-05 0;
     border-block-end: 1px solid $layer-accent-01;
+  }
+
+  &-item-title {
+    color: $text-primary;
+  }
+
+  &-item-subtitle {
+    @include type.type-style('label-01');
+
+    color: $text-secondary;
   }
 }
 
@@ -591,7 +601,7 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
 }
 
 // Accordion overrides for selection summary items
-.#{$block-class__next}__selection-summary-panel {
+.#{$block-class__next}__selection-summary {
   .cds--accordion__arrow {
     transform: rotate(0deg);
   }

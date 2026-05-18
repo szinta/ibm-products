@@ -47,8 +47,8 @@ The AddSelect component is composed of several sections:
     </AddSelect.Content>
   </AddSelect.Body>
 
-  {/* Optional selection summary panel */}
-  <AddSelect.SelectionSummaryPanel
+  {/* Optional selection summary */}
+  <AddSelect.SelectionSummary
     title="Selected items"
     selectedItems={selectedItems}
   />
@@ -127,7 +127,7 @@ Individual selectable item.
 - `hasInfoPanel` - Show info panel icon
 - `onInfoPanelClick` - Info panel click callback
 
-### AddSelect.SelectionSummaryPanel
+### AddSelect.SelectionSummary
 
 Displays list of selected items.
 
@@ -212,7 +212,7 @@ const handleItemSelect = (itemId, selected) => {
 </AddSelect.Content>
 ```
 
-### With Selection Summary Panel
+### With Selection Summary
 
 ```jsx
 <AddSelect multi selectedItems={selectedItems} onItemSelect={handleSelect}>
@@ -220,7 +220,7 @@ const handleItemSelect = (itemId, selected) => {
     <AddSelect.Content layout="horizontal">{/* Items */}</AddSelect.Content>
   </AddSelect.Body>
 
-  <AddSelect.SelectionSummaryPanel
+  <AddSelect.SelectionSummary
     title="Selected items"
     selectedItems={selectedItemsArray}
     showCount
@@ -246,9 +246,9 @@ const handleItemSelect = (itemId, selected) => {
 
 <Canvas of={stories.WithSearchAndFilters} />
 
-## With Selection Summary Panel
+## With Selection Summary
 
-<Canvas of={stories.WithSelectionSummaryPanel} />
+<Canvas of={stories.WithSelectionSummary} />
 
 ## With Item Info Panel
 

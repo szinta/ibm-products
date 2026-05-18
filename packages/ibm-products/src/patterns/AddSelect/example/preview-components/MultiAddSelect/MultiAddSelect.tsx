@@ -182,7 +182,7 @@ export const StandardMultiAddSelect = () => {
                 closeIconDescription="Close details"
               />
             ) : (
-              <AddSelect.SelectionSummaryPanel
+              <AddSelect.SelectionSummary
                 title="Selected business terms"
                 selectedItems={selectedItems}
                 emptyState={
@@ -204,7 +204,7 @@ export const StandardMultiAddSelect = () => {
                     useAccordion={true}
                   />
                 ))}
-              </AddSelect.SelectionSummaryPanel>
+              </AddSelect.SelectionSummary>
             )}
           </Tearsheet.SummaryContent>
         </Tearsheet.Body>

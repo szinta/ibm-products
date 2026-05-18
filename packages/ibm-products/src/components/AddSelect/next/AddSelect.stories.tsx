@@ -26,7 +26,7 @@ export default {
     Content: AddSelect.Content,
     Column: AddSelect.Column,
     Row: AddSelect.Row,
-    SelectionSummaryPanel: AddSelect.SelectionSummaryPanel,
+    SelectionSummary: AddSelect.SelectionSummary,
     SelectionSummaryPanelItem: AddSelect.SelectionSummaryPanelItem,
     ItemInfoPanel: AddSelect.ItemInfoPanel,
   },
@@ -266,9 +266,9 @@ export const WithSearchAndFilters = () => {
 };
 
 /**
- * With selection summary panel
+ * With selection summary
  */
-export const WithSelectionSummaryPanel = () => {
+export const WithSelectionSummary = () => {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 
   const handleItemSelect = (itemId: string, selected: boolean) => {
@@ -313,7 +313,7 @@ export const WithSelectionSummaryPanel = () => {
           </AddSelect.Column>
         </AddSelect.Content>
       </AddSelect.Body>
-      <AddSelect.SelectionSummaryPanel
+      <AddSelect.SelectionSummary
         title="Selected items"
         selectedItems={selectedItemsArray}
         showCount

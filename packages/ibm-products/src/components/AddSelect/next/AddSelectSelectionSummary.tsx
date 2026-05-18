@@ -15,11 +15,11 @@ import { blockClass } from './context';
 
 /**
  * ----------------
- * AddSelectSelectionSummaryPanel
+ * AddSelectSelectionSummary
  * ----------------
  */
 
-export interface AddSelectSelectionSummaryPanelProps {
+export interface AddSelectSelectionSummaryProps {
   /**
    * Panel title
    */
@@ -63,7 +63,7 @@ export interface AddSelectSelectionSummaryPanelProps {
 }
 
 /**
- * AddSelectSelectionSummaryPanel - Displays list of selected items
+ * AddSelectSelectionSummary - Displays list of selected items
  * @example
  * ```jsx
  * <AddSelect.SelectionSummaryPanel
@@ -75,9 +75,9 @@ export interface AddSelectSelectionSummaryPanelProps {
  * />
  * ```
  */
-const AddSelectSelectionSummaryPanel = forwardRef<
+const AddSelectSelectionSummary = forwardRef<
   HTMLDivElement,
-  AddSelectSelectionSummaryPanelProps
+  AddSelectSelectionSummaryProps
 >(
   (
     {
@@ -95,35 +95,28 @@ const AddSelectSelectionSummaryPanel = forwardRef<
     },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
-    const panelClasses = cx(
-      `${blockClass}__selection-summary-panel`,
-      className
-    );
+    const panelClasses = cx(`${blockClass}__selection-summary`, className);
 
     const hasSelections = selectedItems.length > 0;
 
     return (
       <div className={panelClasses} ref={ref} {...rest}>
         {/* Header with title, count, and optional edit icon */}
-        <div className={`${blockClass}__selection-summary-panel-header`}>
-          <p className={`${blockClass}__selection-summary-panel-title`}>
-            {title}
-          </p>
+        <div className={`${blockClass}__selection-summary-header`}>
+          <p className={`${blockClass}__selection-summary-title`}>{title}</p>
           {showCount && (
             <Tag type="gray" size="sm">
               {selectedItems.length}
             </Tag>
           )}
-          <div
-            className={`${blockClass}__selection-summary-panel-header-actions`}
-          >
+          <div className={`${blockClass}__selection-summary-header-actions`}>
             {showEditIcon && onEdit && (
               <IconButton
                 label={editIconDescription}
                 onClick={onEdit}
                 kind="ghost"
                 size="sm"
-                className={`${blockClass}__selection-summary-panel-edit-button`}
+                className={`${blockClass}__selection-summary-edit-button`}
               >
                 <Edit size={16} />
               </IconButton>
@@ -132,7 +125,7 @@ const AddSelectSelectionSummaryPanel = forwardRef<
         </div>
 
         {/* Body content */}
-        <div className={`${blockClass}__selection-summary-panel-body`}>
+        <div className={`${blockClass}__selection-summary-body`}>
           {hasSelections ? (
             children ? (
               children
@@ -146,16 +139,16 @@ const AddSelectSelectionSummaryPanel = forwardRef<
                 {selectedItems.map((item) => (
                   <div
                     key={item.id}
-                    className={`${blockClass}__selection-summary-panel-item-simple`}
+                    className={`${blockClass}__selection-summary-item-simple`}
                   >
                     <div
-                      className={`${blockClass}__selection-summary-panel-item-title`}
+                      className={`${blockClass}__selection-summary-item-title`}
                     >
                       {item.title}
                     </div>
                     {item.subtitle && (
                       <div
-                        className={`${blockClass}__selection-summary-panel-item-subtitle`}
+                        className={`${blockClass}__selection-summary-item-subtitle`}
                       >
                         {item.subtitle}
                       </div>
@@ -173,7 +166,7 @@ const AddSelectSelectionSummaryPanel = forwardRef<
   }
 );
 
-AddSelectSelectionSummaryPanel.propTypes = {
+AddSelectSelectionSummary.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   editIconDescription: PropTypes.string,
@@ -189,6 +182,6 @@ AddSelectSelectionSummaryPanel.propTypes = {
   title: PropTypes.string,
 };
 
-AddSelectSelectionSummaryPanel.displayName = 'AddSelectSelectionSummaryPanel';
+AddSelectSelectionSummary.displayName = 'AddSelectSelectionSummary';
 
-export default AddSelectSelectionSummaryPanel;
+export default AddSelectSelectionSummary;
