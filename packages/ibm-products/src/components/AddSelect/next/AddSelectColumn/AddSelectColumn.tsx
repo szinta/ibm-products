@@ -31,7 +31,7 @@ import { blockClass, AddSelectContext } from '../context';
  * ----------------
  * A composable column component that wraps AddSelectRow items.
  * Provides optional search, sort, and filter functionality.
- * Lives inside AddSelectList and can have multiple instances.
+ * Lives inside AddSelectContent and can have multiple instances.
  */
 
 export interface SortOption {

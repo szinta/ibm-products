@@ -18,9 +18,9 @@ import { blockClass, AddSelectContext } from '../context';
 import AddSelectBody, {
   AddSelectBodyProps,
 } from '../AddSelectBody/AddSelectBody';
-import AddSelectList, {
-  AddSelectListProps,
-} from '../AddSelectList/AddSelectList';
+import AddSelectContent, {
+  AddSelectContentProps,
+} from '../AddSelectContent/AddSelectContent';
 import AddSelectColumn, {
   AddSelectColumnProps,
 } from '../AddSelectColumn/AddSelectColumn';
@@ -72,7 +72,7 @@ export type AddSelectComponentType = React.ForwardRefExoticComponent<
   AddSelectProps & React.RefAttributes<HTMLDivElement>
 > & {
   Body: FC<AddSelectBodyProps>;
-  List: FC<AddSelectListProps>;
+  Content: FC<AddSelectContentProps>;
   Column: FC<AddSelectColumnProps>;
   Row: FC<AddSelectRowProps>;
   SidePanel: FC<AddSelectSidePanelProps>;
@@ -148,7 +148,7 @@ AddSelect.propTypes = {
 };
 
 AddSelect.Body = AddSelectBody;
-AddSelect.List = AddSelectList;
+AddSelect.Content = AddSelectContent;
 AddSelect.Column = AddSelectColumn;
 AddSelect.Row = AddSelectRow;
 AddSelect.SidePanel = AddSelectSidePanel;

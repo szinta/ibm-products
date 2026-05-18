@@ -9,7 +9,7 @@ import React from 'react';
 import { AddSelect } from '../AddSelect/AddSelect';
 import styles from '../_storybook-styles.scss?inline';
 
-import mdx from './AddSelectList.mdx';
+import mdx from './AddSelectContent.mdx';
 
 const sampleItems = [
   {
@@ -78,7 +78,7 @@ export const Default = {
 };
 
 export default {
-  title: 'Preview/Add and select/AddSelectList',
+  title: 'Preview/Add and select/AddSelectContent',
   component: AddSelect.List,
   tags: ['autodocs'],
   decorators: [

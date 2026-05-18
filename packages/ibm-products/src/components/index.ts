@@ -102,7 +102,7 @@ export type {
   AddSelectProps as preview__AddSelectProps,
   AddSelectComponentType,
   AddSelectBodyProps,
-  AddSelectListProps,
+  AddSelectContentProps,
   AddSelectRowProps,
   AddSelectContextType,
 } from './AddSelect/next';

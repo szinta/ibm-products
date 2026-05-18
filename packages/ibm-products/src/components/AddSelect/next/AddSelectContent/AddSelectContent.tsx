@@ -20,11 +20,11 @@ import { blockClass, AddSelectContext } from '../context';
 
 /**
  * ----------------
- * AddSelectList
+ * AddSelectContent
  * ----------------
  */
 
-export interface AddSelectListProps {
+export interface AddSelectContentProps {
   children?: ReactNode;
   /**
    * Optional class name
@@ -36,7 +36,7 @@ export interface AddSelectListProps {
   layout?: 'vertical' | 'horizontal';
 }
 
-const AddSelectList = forwardRef<HTMLDivElement, AddSelectListProps>(
+const AddSelectContent = forwardRef<HTMLDivElement, AddSelectContentProps>(
   (
     { children, className, layout = 'vertical', ...rest },
     ref: ForwardedRef<HTMLDivElement>
@@ -185,13 +185,13 @@ const AddSelectList = forwardRef<HTMLDivElement, AddSelectListProps>(
   }
 );
 
-AddSelectList.propTypes = {
+AddSelectContent.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   /**@ts-ignore */
   layout: PropTypes.oneOf(['vertical', 'horizontal']),
 };
 
-AddSelectList.displayName = 'AddSelectList';
+AddSelectContent.displayName = 'AddSelectContent';
 
-export default AddSelectList;
+export default AddSelectContent;
