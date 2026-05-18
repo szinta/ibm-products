@@ -322,7 +322,7 @@ export const MultiAddSelectWithHierarchy = forwardRef<
               onBreadcrumbClick={onBreadcrumbClick}
             />
           )}
-          <AddSelect.List layout="horizontal">
+          <AddSelect.Content layout="horizontal">
             {currentItems.length > 0 ? (
               <RecursiveColumn
                 items={currentItems}
@@ -338,7 +338,7 @@ export const MultiAddSelectWithHierarchy = forwardRef<
                 <p>{noResultsDescription}</p>
               </div>
             )}
-          </AddSelect.List>
+          </AddSelect.Content>
         </AddSelect.Body>
       </AddSelect>
     );

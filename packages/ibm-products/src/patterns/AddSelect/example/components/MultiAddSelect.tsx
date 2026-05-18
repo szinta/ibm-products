@@ -221,7 +221,7 @@ export const MultiAddSelect = forwardRef<HTMLDivElement, MultiAddSelectProps>(
           itemCount={filteredItems.length}
           onSearch={handleSearch}
         >
-          <AddSelect.List>
+          <AddSelect.Content>
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => {
                 return (
@@ -244,7 +244,7 @@ export const MultiAddSelect = forwardRef<HTMLDivElement, MultiAddSelectProps>(
                 <p>{noResultsDescription}</p>
               </div>
             )}
-          </AddSelect.List>
+          </AddSelect.Content>
         </AddSelect.Body>
       </AddSelect>
     );

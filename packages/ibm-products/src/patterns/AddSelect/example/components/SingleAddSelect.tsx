@@ -255,7 +255,7 @@ export const SingleAddSelect = forwardRef<HTMLDivElement, SingleAddSelectProps>(
           path={breadcrumbPath}
           onBreadcrumbClick={handleBreadcrumbClick}
         >
-          <AddSelect.List>
+          <AddSelect.Content>
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => {
                 // Use the data manager to check if item has children
@@ -281,7 +281,7 @@ export const SingleAddSelect = forwardRef<HTMLDivElement, SingleAddSelectProps>(
                 <p>{noResultsDescription}</p>
               </div>
             )}
-          </AddSelect.List>
+          </AddSelect.Content>
         </AddSelect.Body>
       </AddSelect>
     );
