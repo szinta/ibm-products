@@ -1,0 +1,271 @@
+import { Story, Controls, Source, Canvas } from '@storybook/addon-docs/blocks';
+import { AddSelect } from '.';
+import * as stories from './AddSelect.stories';
+import styles from './_storybook-styles.scss?inline';
+
+# AddSelect
+
+[Usage guidelines](https://pages.github.ibm.com/carbon/ibm-products/components/add-select/usage/)
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Component API](#component-api)
+
+## Overview
+
+AddSelect is a composable component system for building add/select interfaces.
+It provides a flexible, component-based approach where you can compose the UI
+using smaller, focused components instead of a monolithic component.
+
+The implementation uses the compound component pattern in React, with distinct
+and well-defined sections. You need to import the main `AddSelect` component,
+and all other subcomponents are available as static properties.
+
+## Main Anatomy
+
+The AddSelect component is composed of several sections:
+
+```jsx
+<AddSelect multi onItemSelect={handleSelect} selectedItems={selectedItems}>
+  <AddSelect.Body
+    itemsLabel="Items"
+    globalSearchLabel="Search"
+    itemCount={items.length}
+  >
+    <AddSelect.Content>
+      {items.map((item) => (
+        <AddSelect.Row
+          key={item.id}
+          itemId={item.id}
+          title={item.title}
+          value={item.value}
+        />
+      ))}
+    </AddSelect.Content>
+  </AddSelect.Body>
+
+  {/* Optional side panel */}
+  <AddSelect.SidePanel>
+    <AddSelect.SelectionSummaryPanel
+      title="Selected items"
+      selectedItems={selectedItems}
+    />
+  </AddSelect.SidePanel>
+</AddSelect>
+```
+
+## Core Components
+
+### AddSelect (Main Container)
+
+The root component that provides context for selection state and callbacks.
+
+**Props:**
+
+- `multi` - Enable multi-select (checkboxes) or single-select (radio buttons)
+- `selectedItems` - Set of selected item IDs
+- `onItemSelect` - Callback when an item is selected/deselected
+- `onNavigate` - Callback for hierarchical navigation
+
+### AddSelect.Body
+
+Contains the search bar, breadcrumbs, and main content area.
+
+**Props:**
+
+- `itemsLabel` - Label for the items section
+- `globalSearchLabel` - Label for the search input
+- `globalSearchPlaceholder` - Placeholder text for search
+- `itemCount` - Total number of items
+- `path` - Navigation path for breadcrumbs
+- `onSearch` - Search callback
+- `onBreadcrumbClick` - Breadcrumb navigation callback
+
+### AddSelect.Content
+
+Container for items with keyboard navigation support.
+
+**Props:**
+
+- `layout` - Layout direction: 'vertical' (default) or 'horizontal'
+
+**Keyboard Navigation:**
+
+- **Arrow Up/Down** - Navigate between items
+- **Arrow Right** - Navigate into children (if available)
+- **Enter/Space** - Select/deselect item
+- **Ctrl+Home** - Jump to first item
+- **Ctrl+End** - Jump to last item
+
+### AddSelect.Column
+
+Provides column layout with optional search, sort, and filter.
+
+**Props:**
+
+- `title` - Column title
+- `showSearch` - Enable search input
+- `showSort` - Enable sort button
+- `showFilter` - Enable filter button
+- `showSelectAll` - Show "Select All" checkbox (multi-select only)
+- `itemCount` - Number of items in column
+
+### AddSelect.Row
+
+Individual selectable item.
+
+**Props:**
+
+- `itemId` - Unique identifier
+- `title` - Item title
+- `subtitle` - Optional subtitle
+- `value` - Item value
+- `selected` - Whether item is selected
+- `disabled` - Whether item is disabled
+- `hasChildren` - Whether item has children for navigation
+- `hasInfoPanel` - Show info panel icon
+- `onInfoPanelClick` - Info panel click callback
+
+### AddSelect.SidePanel
+
+Optional wrapper for side panel content.
+
+**Props:**
+
+- `width` - Width variant: 'narrow', 'default', or 'wide'
+
+### AddSelect.SelectionSummaryPanel
+
+Displays list of selected items.
+
+**Props:**
+
+- `title` - Panel title
+- `selectedItems` - Array of selected items
+- `showCount` - Show count badge
+- `showEditIcon` - Show edit icon
+- `onEdit` - Edit icon click handler
+
+### AddSelect.ItemInfoPanel
+
+Displays detailed information about a specific item.
+
+**Props:**
+
+- `title` - Panel title
+- `item` - Item data or custom content
+- `onClose` - Close button handler
+- `renderContent` - Custom content renderer
+
+## Usage Patterns
+
+### Basic Multi-Select
+
+```jsx
+const [selectedItems, setSelectedItems] = useState(new Set());
+
+const handleItemSelect = (itemId, selected) => {
+  const newSelected = new Set(selectedItems);
+  if (selected) {
+    newSelected.add(itemId);
+  } else {
+    newSelected.delete(itemId);
+  }
+  setSelectedItems(newSelected);
+};
+
+<AddSelect multi selectedItems={selectedItems} onItemSelect={handleItemSelect}>
+  <AddSelect.Body itemsLabel="Items" itemCount={items.length}>
+    <AddSelect.Content>
+      {items.map((item) => (
+        <AddSelect.Row
+          key={item.id}
+          itemId={item.id}
+          title={item.title}
+          value={item.value}
+        />
+      ))}
+    </AddSelect.Content>
+  </AddSelect.Body>
+</AddSelect>;
+```
+
+### Single Select
+
+```jsx
+<AddSelect
+  multi={false}
+  selectedItems={selectedItems}
+  onItemSelect={handleItemSelect}
+>
+  {/* Same structure as multi-select */}
+</AddSelect>
+```
+
+### With Columns
+
+```jsx
+<AddSelect.Content>
+  <AddSelect.Column
+    title="Available items"
+    showSearch
+    showSelectAll
+    itemCount={items.length}
+  >
+    {items.map((item) => (
+      <AddSelect.Row {...item} />
+    ))}
+  </AddSelect.Column>
+</AddSelect.Content>
+```
+
+### With Side Panel
+
+```jsx
+<AddSelect multi selectedItems={selectedItems} onItemSelect={handleSelect}>
+  <AddSelect.Body itemsLabel="Items" itemCount={items.length}>
+    <AddSelect.Content layout="horizontal">{/* Items */}</AddSelect.Content>
+  </AddSelect.Body>
+
+  <AddSelect.SidePanel>
+    <AddSelect.SelectionSummaryPanel
+      title="Selected items"
+      selectedItems={selectedItemsArray}
+      showCount
+    />
+  </AddSelect.SidePanel>
+</AddSelect>
+```
+
+# Examples
+
+## Default
+
+<Canvas of={stories.Default} />
+
+## Single Select
+
+<Canvas of={stories.SingleSelect} />
+
+## With Columns
+
+<Canvas of={stories.WithColumns} />
+
+## With Search and Filters
+
+<Canvas of={stories.WithSearchAndFilters} />
+
+## With Side Panel
+
+<Canvas of={stories.WithSidePanel} />
+
+## With Item Info Panel
+
+<Canvas of={stories.WithItemInfoPanel} />
+
+## Component API
+
+<Controls />

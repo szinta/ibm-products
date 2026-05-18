@@ -8,7 +8,7 @@
 import React, { forwardRef, ForwardedRef, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { blockClass } from '../context';
+import { blockClass } from './context';
 
 /**
  * ----------------

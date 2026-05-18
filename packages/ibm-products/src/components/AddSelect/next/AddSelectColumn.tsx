@@ -23,7 +23,7 @@ import {
   IconButton,
 } from '@carbon/react';
 import { Filter, ArrowsVertical } from '@carbon/react/icons';
-import { blockClass, AddSelectContext } from '../context';
+import { blockClass, AddSelectContext } from './context';
 
 /**
  * ----------------

@@ -11,7 +11,7 @@ import cx from 'classnames';
 import { Tag, IconButton } from '@carbon/react';
 import { Edit } from '@carbon/react/icons';
 import type { AddSelectItem } from '@carbon/ibm-products-primitives';
-import { blockClass } from '../context';
+import { blockClass } from './context';
 
 /**
  * ----------------

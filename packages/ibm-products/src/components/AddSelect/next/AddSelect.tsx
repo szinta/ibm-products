@@ -14,29 +14,23 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { blockClass, AddSelectContext } from '../context';
-import AddSelectBody, {
-  AddSelectBodyProps,
-} from '../AddSelectBody/AddSelectBody';
-import AddSelectContent, {
-  AddSelectContentProps,
-} from '../AddSelectContent/AddSelectContent';
-import AddSelectColumn, {
-  AddSelectColumnProps,
-} from '../AddSelectColumn/AddSelectColumn';
-import AddSelectRow, { AddSelectRowProps } from '../AddSelectRow/AddSelectRow';
+import { blockClass, AddSelectContext } from './context';
+import AddSelectBody, { AddSelectBodyProps } from './AddSelectBody';
+import AddSelectContent, { AddSelectContentProps } from './AddSelectContent';
+import AddSelectColumn, { AddSelectColumnProps } from './AddSelectColumn';
+import AddSelectRow, { AddSelectRowProps } from './AddSelectRow';
 import AddSelectSidePanel, {
   AddSelectSidePanelProps,
-} from '../AddSelectSidePanel/AddSelectSidePanel';
+} from './AddSelectSidePanel';
 import AddSelectSelectionSummaryPanel, {
   AddSelectSelectionSummaryPanelProps,
-} from '../AddSelectSelectionSummaryPanel/AddSelectSelectionSummaryPanel';
+} from './AddSelectSelectionSummaryPanel';
 import AddSelectSelectionSummaryPanelItem, {
   AddSelectSelectionSummaryPanelItemProps,
-} from '../AddSelectSelectionSummaryPanelItem/AddSelectSelectionSummaryPanelItem';
+} from './AddSelectSelectionSummaryPanelItem';
 import AddSelectItemInfoPanel, {
   AddSelectItemInfoPanelProps,
-} from '../AddSelectItemInfoPanel/AddSelectItemInfoPanel';
+} from './AddSelectItemInfoPanel';
 
 /**
  * ----------

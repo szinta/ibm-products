@@ -16,7 +16,7 @@ import React, {
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Search, Tag, Breadcrumb, BreadcrumbItem, Link } from '@carbon/react';
-import { blockClass, AddSelectContext } from '../context';
+import { blockClass, AddSelectContext } from './context';
 
 /**
  * ----------------

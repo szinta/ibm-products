@@ -5,20 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { AddSelect } from './AddSelect/AddSelect';
-export type {
-  AddSelectProps,
-  AddSelectComponentType,
-} from './AddSelect/AddSelect';
-export type { AddSelectBodyProps } from './AddSelectBody/AddSelectBody';
-export type { AddSelectContentProps } from './AddSelectContent/AddSelectContent';
-export type { AddSelectColumnProps } from './AddSelectColumn/AddSelectColumn';
-export type { AddSelectRowProps } from './AddSelectRow/AddSelectRow';
-export type { AddSelectSidePanelProps } from './AddSelectSidePanel/AddSelectSidePanel';
-export type { AddSelectSelectionSummaryPanelProps } from './AddSelectSelectionSummaryPanel/AddSelectSelectionSummaryPanel';
-export type { AddSelectSelectionSummaryPanelItemProps } from './AddSelectSelectionSummaryPanelItem/AddSelectSelectionSummaryPanelItem';
+export { AddSelect } from './AddSelect';
+export type { AddSelectProps, AddSelectComponentType } from './AddSelect';
+export type { AddSelectBodyProps } from './AddSelectBody';
+export type { AddSelectContentProps } from './AddSelectContent';
+export type { AddSelectColumnProps } from './AddSelectColumn';
+export type { AddSelectRowProps } from './AddSelectRow';
+export type { AddSelectSidePanelProps } from './AddSelectSidePanel';
+export type { AddSelectSelectionSummaryPanelProps } from './AddSelectSelectionSummaryPanel';
+export type { AddSelectSelectionSummaryPanelItemProps } from './AddSelectSelectionSummaryPanelItem';
 export type {
   AddSelectItemInfoPanelProps,
   ItemDetailEntry,
-} from './AddSelectItemInfoPanel/AddSelectItemInfoPanel';
+} from './AddSelectItemInfoPanel';
 export type { AddSelectContextType } from './context';
