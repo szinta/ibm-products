@@ -70,6 +70,10 @@ export interface AddSelectBodyProps {
    * Actions slot - adds custom actions (filter/sort) next to default search
    */
   actionsSlot?: ReactNode;
+  /**
+   * Sub-header actions - custom content/actions rendered after breadcrumbs and item count
+   */
+  subHeaderActions?: ReactNode;
 }
 
 const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
@@ -87,6 +91,7 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
       onBreadcrumbClick,
       headerContent,
       actionsSlot,
+      subHeaderActions,
       ...rest
     },
     ref: ForwardedRef<HTMLDivElement>
@@ -182,6 +187,11 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
                     {itemCount}
                   </Tag>
                 </div>
+                {subHeaderActions && (
+                  <div className={`${blockClass}__sub-header-actions`}>
+                    {subHeaderActions}
+                  </div>
+                )}
               </div>
             </>
           )}
@@ -215,6 +225,7 @@ AddSelectBody.propTypes = {
     })
   ),
   searchResultsTitle: PropTypes.string,
+  subHeaderActions: PropTypes.node,
 };
 
 AddSelectBody.displayName = 'AddSelectBody';

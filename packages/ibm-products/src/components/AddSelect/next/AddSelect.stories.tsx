@@ -949,3 +949,74 @@ export const WithDefaultSearchAndActions = () => {
     </AddSelect>
   );
 };
+
+/**
+ * With sub-header actions
+ *
+ * This example demonstrates the `subHeaderActions` prop which allows you to add
+ * custom content or actions in the sub-header area after the breadcrumbs and item count.
+ * This is useful for adding contextual actions like "Clear all", "Refresh", or status indicators.
+ */
+export const WithSubHeaderActions = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [items, setItems] = useState(simpleItems);
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  const handleRefresh = () => {
+    // Simulate refresh - in real app, this would fetch new data
+    setItems([...simpleItems]);
+  };
+
+  const handleClearAll = () => {
+    setSelectedItems(new Set());
+  };
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="All items"
+        itemCount={items.length}
+        subHeaderActions={
+          <>
+            <Button kind="ghost" size="sm" onClick={handleRefresh}>
+              Refresh
+            </Button>
+            <Button
+              kind="ghost"
+              size="sm"
+              onClick={handleClearAll}
+              disabled={selectedItems.size === 0}
+            >
+              Clear all ({selectedItems.size})
+            </Button>
+          </>
+        }
+      >
+        <AddSelect.Content>
+          {items.map((item) => (
+            <AddSelect.Row
+              key={item.id}
+              itemId={item.id}
+              title={item.title}
+              subtitle={item.subtitle}
+              value={item.value}
+            />
+          ))}
+        </AddSelect.Content>
+      </AddSelect.Body>
+    </AddSelect>
+  );
+};

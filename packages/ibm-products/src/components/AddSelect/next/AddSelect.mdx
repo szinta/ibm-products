@@ -81,6 +81,9 @@ Contains the search bar, breadcrumbs, and main content area.
 - `path` - Navigation path for breadcrumbs
 - `onSearch` - Search callback
 - `onBreadcrumbClick` - Breadcrumb navigation callback
+- `headerContent` - Custom header content (replaces entire header)
+- `actionsSlot` - Custom actions next to default search
+- `subHeaderActions` - Custom content/actions after breadcrumbs and item count
 
 ### AddSelect.Content
 
@@ -192,6 +195,50 @@ to keep the default search behavior.
 - ✅ You need complete control over the header
 - ✅ You want custom search behavior
 - ✅ You need a custom layout
+
+## Using Sub-Header Actions
+
+The `subHeaderActions` prop allows you to add custom content or actions in the
+sub-header area, positioned after the breadcrumbs and item count. This is useful
+for adding contextual actions like "Refresh", "Clear all", or status indicators.
+
+### Example: Sub-Header Actions
+
+```jsx
+<AddSelect.Body
+  itemsLabel="All items"
+  itemCount={items.length}
+  subHeaderActions={
+    <>
+      <Button kind="ghost" size="sm" onClick={handleRefresh}>
+        Refresh
+      </Button>
+      <Button
+        kind="ghost"
+        size="sm"
+        onClick={handleClearAll}
+        disabled={selectedItems.size === 0}
+      >
+        Clear all ({selectedItems.size})
+      </Button>
+    </>
+  }
+>
+  <AddSelect.Content>
+    {items.map((item) => (
+      <AddSelect.Row {...item} />
+    ))}
+  </AddSelect.Content>
+</AddSelect.Body>
+```
+
+### Common Use Cases
+
+- **Refresh button**: Reload data from the server
+- **Clear all button**: Deselect all selected items
+- **Status indicators**: Show loading state or item counts
+- **Quick actions**: Provide shortcuts for common operations
+- **Custom text**: Display additional context or information
 
 ## Custom Search, Filter, and Sort
 

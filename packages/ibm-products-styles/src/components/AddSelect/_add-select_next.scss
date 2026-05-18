@@ -80,6 +80,13 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
   color: $text-secondary;
 }
 
+.#{$block-class__next}__sub-header-actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-03;
+  margin-inline-start: $spacing-05;
+}
+
 .#{$block-class__next}__content {
   overflow: auto;
   flex: 1;
