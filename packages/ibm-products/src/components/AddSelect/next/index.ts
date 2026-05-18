@@ -14,7 +14,6 @@ export type { AddSelectBodyProps } from './AddSelectBody/AddSelectBody';
 export type { AddSelectListProps } from './AddSelectList/AddSelectList';
 export type { AddSelectColumnProps } from './AddSelectColumn/AddSelectColumn';
 export type { AddSelectRowProps } from './AddSelectRow/AddSelectRow';
-export type { AddSelectBreadcrumbsProps } from './AddSelectBreadcrumbs/AddSelectBreadcrumbs';
 export type { AddSelectSidePanelProps } from './AddSelectSidePanel/AddSelectSidePanel';
 export type { AddSelectSelectionSummaryPanelProps } from './AddSelectSelectionSummaryPanel/AddSelectSelectionSummaryPanel';
 export type { AddSelectSelectionSummaryPanelItemProps } from './AddSelectSelectionSummaryPanelItem/AddSelectSelectionSummaryPanelItem';

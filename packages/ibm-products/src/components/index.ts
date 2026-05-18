@@ -104,7 +104,6 @@ export type {
   AddSelectBodyProps,
   AddSelectListProps,
   AddSelectRowProps,
-  AddSelectBreadcrumbsProps,
   AddSelectContextType,
 } from './AddSelect/next';
 

@@ -11,10 +11,11 @@ import React, {
   ReactNode,
   useState,
   useContext,
+  MouseEvent,
 } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { Search, Tag } from '@carbon/react';
+import { Search, Tag, Breadcrumb, BreadcrumbItem, Link } from '@carbon/react';
 import { blockClass, AddSelectContext } from '../context';
 
 /**
@@ -124,10 +125,36 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
                       {searchResultsTitle}
                     </p>
                   ) : path && path.length > 0 ? (
-                    <AddSelectBreadcrumbs
-                      path={path}
-                      onBreadcrumbClick={onBreadcrumbClick}
-                    />
+                    <Breadcrumb
+                      noTrailingSlash
+                      className={cx(`${blockClass}__breadcrumbs`, {
+                        [`${blockClass}__breadcrumbs--multi`]: multi,
+                      })}
+                    >
+                      {path.map((entry, idx) => {
+                        const isCurrentPage = idx === path.length - 1;
+                        return (
+                          <BreadcrumbItem
+                            key={entry.id}
+                            isCurrentPage={isCurrentPage}
+                          >
+                            {isCurrentPage ? (
+                              entry.title
+                            ) : (
+                              <Link
+                                href="#"
+                                onClick={(e: MouseEvent<HTMLAnchorElement>) => {
+                                  e.preventDefault();
+                                  onBreadcrumbClick?.(idx);
+                                }}
+                              >
+                                {entry.title}
+                              </Link>
+                            )}
+                          </BreadcrumbItem>
+                        );
+                      })}
+                    </Breadcrumb>
                   ) : (
                     <p className={`${blockClass}__tags-label`}>{itemsLabel}</p>
                   )}
@@ -146,9 +173,6 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
     );
   }
 );
-
-// Import AddSelectBreadcrumbs after the component definition to avoid circular dependency
-import AddSelectBreadcrumbs from '../AddSelectBreadcrumbs/AddSelectBreadcrumbs';
 
 AddSelectBody.propTypes = {
   children: PropTypes.node,
