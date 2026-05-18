@@ -26,7 +26,6 @@ export default {
     Content: AddSelect.Content,
     Column: AddSelect.Column,
     Row: AddSelect.Row,
-    SidePanel: AddSelect.SidePanel,
     SelectionSummaryPanel: AddSelect.SelectionSummaryPanel,
     SelectionSummaryPanelItem: AddSelect.SelectionSummaryPanelItem,
     ItemInfoPanel: AddSelect.ItemInfoPanel,
@@ -267,9 +266,9 @@ export const WithSearchAndFilters = () => {
 };
 
 /**
- * With side panel - Selection summary panel
+ * With selection summary panel
  */
-export const WithSidePanel = () => {
+export const WithSelectionSummaryPanel = () => {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 
   const handleItemSelect = (itemId: string, selected: boolean) => {
@@ -314,13 +313,11 @@ export const WithSidePanel = () => {
           </AddSelect.Column>
         </AddSelect.Content>
       </AddSelect.Body>
-      <AddSelect.SidePanel>
-        <AddSelect.SelectionSummaryPanel
-          title="Selected items"
-          selectedItems={selectedItemsArray}
-          showCount
-        />
-      </AddSelect.SidePanel>
+      <AddSelect.SelectionSummaryPanel
+        title="Selected items"
+        selectedItems={selectedItemsArray}
+        showCount
+      />
     </AddSelect>
   );
 };
@@ -376,16 +373,12 @@ export const WithItemInfoPanel = () => {
         </AddSelect.Content>
       </AddSelect.Body>
       {infoPanelItem && (
-        <AddSelect.SidePanel>
-          <AddSelect.ItemInfoPanel
-            title="Item details"
-            item={infoPanelItem}
-            onClose={() => setInfoPanelItemId(null)}
-          />
-        </AddSelect.SidePanel>
+        <AddSelect.ItemInfoPanel
+          title="Item details"
+          item={infoPanelItem}
+          onClose={() => setInfoPanelItemId(null)}
+        />
       )}
     </AddSelect>
   );
 };
-
-// Made with Bob

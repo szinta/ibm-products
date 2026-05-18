@@ -217,40 +217,38 @@ export const MultiAddSelectWithHierarchy = () => {
           </Tearsheet.MainContent>
 
           <Tearsheet.SummaryContent className="summary-content-no-padding">
-            <AddSelect.SidePanel width="default">
-              {infoPanel.show && infoPanel.item ? (
-                <AddSelect.ItemInfoPanel
-                  title="Item details"
-                  item={infoPanel.item.meta}
-                  onClose={handleCloseInfo}
-                  closeIconDescription="Close details"
-                />
-              ) : (
-                <AddSelect.SelectionSummaryPanel
-                  title="Selected files"
-                  selectedItems={selectedItems}
-                  emptyState={
-                    <div style={{ marginBlockStart: '3rem' }}>
-                      <NoDataEmptyState
-                        illustrationTheme="light"
-                        size="sm"
-                        title="No files selected"
-                        subtitle="Select files to include them in your selection."
-                      />
-                    </div>
-                  }
-                >
-                  {selectedItems.map((item) => (
-                    <AddSelect.SelectionSummaryPanelItem
-                      key={item.id}
-                      item={item}
-                      onRemove={handleRemoveItem}
-                      useAccordion={true}
+            {infoPanel.show && infoPanel.item ? (
+              <AddSelect.ItemInfoPanel
+                title="Item details"
+                item={infoPanel.item.meta}
+                onClose={handleCloseInfo}
+                closeIconDescription="Close details"
+              />
+            ) : (
+              <AddSelect.SelectionSummaryPanel
+                title="Selected files"
+                selectedItems={selectedItems}
+                emptyState={
+                  <div style={{ marginBlockStart: '3rem' }}>
+                    <NoDataEmptyState
+                      illustrationTheme="light"
+                      size="sm"
+                      title="No files selected"
+                      subtitle="Select files to include them in your selection."
                     />
-                  ))}
-                </AddSelect.SelectionSummaryPanel>
-              )}
-            </AddSelect.SidePanel>
+                  </div>
+                }
+              >
+                {selectedItems.map((item) => (
+                  <AddSelect.SelectionSummaryPanelItem
+                    key={item.id}
+                    item={item}
+                    onRemove={handleRemoveItem}
+                    useAccordion={true}
+                  />
+                ))}
+              </AddSelect.SelectionSummaryPanel>
+            )}
           </Tearsheet.SummaryContent>
         </Tearsheet.Body>
 
@@ -289,5 +287,3 @@ export const MultiAddSelectWithHierarchy = () => {
     </div>
   );
 };
-
-// Made with Bob

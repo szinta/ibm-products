@@ -11,7 +11,6 @@ export type { AddSelectBodyProps } from './AddSelectBody';
 export type { AddSelectContentProps } from './AddSelectContent';
 export type { AddSelectColumnProps } from './AddSelectColumn';
 export type { AddSelectRowProps } from './AddSelectRow';
-export type { AddSelectSidePanelProps } from './AddSelectSidePanel';
 export type { AddSelectSelectionSummaryPanelProps } from './AddSelectSelectionSummaryPanel';
 export type { AddSelectSelectionSummaryPanelItemProps } from './AddSelectSelectionSummaryPanelItem';
 export type {

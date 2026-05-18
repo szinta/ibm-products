@@ -174,40 +174,38 @@ export const StandardMultiAddSelect = () => {
           </Tearsheet.MainContent>
 
           <Tearsheet.SummaryContent className="summary-content-no-padding">
-            <AddSelect.SidePanel width="default">
-              {infoPanel.show && infoPanel.item ? (
-                <AddSelect.ItemInfoPanel
-                  title="Item details"
-                  item={infoPanel.item.meta}
-                  onClose={handleCloseInfo}
-                  closeIconDescription="Close details"
-                />
-              ) : (
-                <AddSelect.SelectionSummaryPanel
-                  title="Selected business terms"
-                  selectedItems={selectedItems}
-                  emptyState={
-                    <div style={{ marginBlockStart: '3rem' }}>
-                      <NoDataEmptyState
-                        illustrationTheme="light"
-                        size="sm"
-                        title="No business terms selected"
-                        subtitle="Select a term to include the full set of the governance artifacts it contains in the governance scope."
-                      />
-                    </div>
-                  }
-                >
-                  {selectedItems.map((item) => (
-                    <AddSelect.SelectionSummaryPanelItem
-                      key={item.id}
-                      item={item}
-                      onRemove={handleRemoveItem}
-                      useAccordion={true}
+            {infoPanel.show && infoPanel.item ? (
+              <AddSelect.ItemInfoPanel
+                title="Item details"
+                item={infoPanel.item.meta}
+                onClose={handleCloseInfo}
+                closeIconDescription="Close details"
+              />
+            ) : (
+              <AddSelect.SelectionSummaryPanel
+                title="Selected business terms"
+                selectedItems={selectedItems}
+                emptyState={
+                  <div style={{ marginBlockStart: '3rem' }}>
+                    <NoDataEmptyState
+                      illustrationTheme="light"
+                      size="sm"
+                      title="No business terms selected"
+                      subtitle="Select a term to include the full set of the governance artifacts it contains in the governance scope."
                     />
-                  ))}
-                </AddSelect.SelectionSummaryPanel>
-              )}
-            </AddSelect.SidePanel>
+                  </div>
+                }
+              >
+                {selectedItems.map((item) => (
+                  <AddSelect.SelectionSummaryPanelItem
+                    key={item.id}
+                    item={item}
+                    onRemove={handleRemoveItem}
+                    useAccordion={true}
+                  />
+                ))}
+              </AddSelect.SelectionSummaryPanel>
+            )}
           </Tearsheet.SummaryContent>
         </Tearsheet.Body>
 

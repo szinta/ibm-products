@@ -47,13 +47,11 @@ The AddSelect component is composed of several sections:
     </AddSelect.Content>
   </AddSelect.Body>
 
-  {/* Optional side panel */}
-  <AddSelect.SidePanel>
-    <AddSelect.SelectionSummaryPanel
-      title="Selected items"
-      selectedItems={selectedItems}
-    />
-  </AddSelect.SidePanel>
+  {/* Optional selection summary panel */}
+  <AddSelect.SelectionSummaryPanel
+    title="Selected items"
+    selectedItems={selectedItems}
+  />
 </AddSelect>
 ```
 
@@ -128,14 +126,6 @@ Individual selectable item.
 - `hasChildren` - Whether item has children for navigation
 - `hasInfoPanel` - Show info panel icon
 - `onInfoPanelClick` - Info panel click callback
-
-### AddSelect.SidePanel
-
-Optional wrapper for side panel content.
-
-**Props:**
-
-- `width` - Width variant: 'narrow', 'default', or 'wide'
 
 ### AddSelect.SelectionSummaryPanel
 
@@ -222,7 +212,7 @@ const handleItemSelect = (itemId, selected) => {
 </AddSelect.Content>
 ```
 
-### With Side Panel
+### With Selection Summary Panel
 
 ```jsx
 <AddSelect multi selectedItems={selectedItems} onItemSelect={handleSelect}>
@@ -230,13 +220,11 @@ const handleItemSelect = (itemId, selected) => {
     <AddSelect.Content layout="horizontal">{/* Items */}</AddSelect.Content>
   </AddSelect.Body>
 
-  <AddSelect.SidePanel>
-    <AddSelect.SelectionSummaryPanel
-      title="Selected items"
-      selectedItems={selectedItemsArray}
-      showCount
-    />
-  </AddSelect.SidePanel>
+  <AddSelect.SelectionSummaryPanel
+    title="Selected items"
+    selectedItems={selectedItemsArray}
+    showCount
+  />
 </AddSelect>
 ```
 
@@ -258,9 +246,9 @@ const handleItemSelect = (itemId, selected) => {
 
 <Canvas of={stories.WithSearchAndFilters} />
 
-## With Side Panel
+## With Selection Summary Panel
 
-<Canvas of={stories.WithSidePanel} />
+<Canvas of={stories.WithSelectionSummaryPanel} />
 
 ## With Item Info Panel
 

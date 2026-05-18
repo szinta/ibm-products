@@ -387,5 +387,3 @@ MultiAddSelectWithHierarchy.propTypes = {
 };
 
 MultiAddSelectWithHierarchy.displayName = 'MultiAddSelectWithHierarchy';
-
-// Made with Bob

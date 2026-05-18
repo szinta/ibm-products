@@ -6,7 +6,7 @@
  */
 
 // Multi Add Select Pattern - Remove default padding from Tearsheet.SummaryContent
-// to allow AddSelect.SidePanel to control its own spacing
+// to allow AddSelect panels to control their own spacing
 .summary-content-no-padding {
   padding-inline: 0;
 }
