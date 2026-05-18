@@ -14,7 +14,8 @@ import { carbonElement as customElement } from '@carbon/web-components/es/global
 import '@carbon/web-components/es/components/button/index.js';
 import '@carbon/web-components/es/components/search/index.js';
 import '@carbon/web-components/es/components/tag/index.js';
-import '../add-select-breadcrumbs/index.js';
+import '@carbon/web-components/es/components/breadcrumb/index.js';
+import '@carbon/web-components/es/components/link/index.js';
 import { prefix } from '../../../globals/settings';
 import styles from './add-select-body.scss?lit';
 
@@ -111,24 +112,6 @@ class CDSAddSelectBody extends LitElement {
     );
   }
 
-  /**
-   * Handle breadcrumb click
-   */
-  private _handleBreadcrumbClick(event: CustomEvent) {
-    const init = {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-      detail: event.detail,
-    };
-    this.dispatchEvent(
-      new CustomEvent(
-        (this.constructor as typeof CDSAddSelectBody).eventBreadcrumbClick,
-        init
-      )
-    );
-  }
-
   render() {
     const {
       itemsLabel,
@@ -139,7 +122,6 @@ class CDSAddSelectBody extends LitElement {
       path,
       _searchTerm: searchTerm,
       _handleSearch: handleSearch,
-      _handleBreadcrumbClick: handleBreadcrumbClick,
     } = this;
 
     const bodyClasses = classMap({
@@ -174,10 +156,51 @@ class CDSAddSelectBody extends LitElement {
                     `
                   : path && path.length > 0
                     ? html`
-                        <c4p-add-select-breadcrumbs
-                          .path=${path}
-                          @c4p-add-select-breadcrumbs-click=${handleBreadcrumbClick}
-                        ></c4p-add-select-breadcrumbs>
+                        <cds-breadcrumb
+                          no-trailing-slash
+                          class="${classMap({
+                            [`${prefix}--add-select__next__breadcrumbs`]: true,
+                            [`${prefix}--add-select__next__breadcrumbs--multi`]:
+                              this._multi,
+                          })}"
+                        >
+                          ${path.map((entry, idx) => {
+                            const isCurrentPage = idx === path.length - 1;
+                            return html`
+                              <cds-breadcrumb-item
+                                ?is-current-page=${isCurrentPage}
+                              >
+                                ${isCurrentPage
+                                  ? entry.title
+                                  : html`
+                                      <cds-link
+                                        href="#"
+                                        @click=${(e: Event) => {
+                                          e.preventDefault();
+                                          const init = {
+                                            bubbles: true,
+                                            cancelable: true,
+                                            composed: true,
+                                            detail: { index: idx },
+                                          };
+                                          this.dispatchEvent(
+                                            new CustomEvent(
+                                              (
+                                                this
+                                                  .constructor as typeof CDSAddSelectBody
+                                              ).eventBreadcrumbClick,
+                                              init
+                                            )
+                                          );
+                                        }}
+                                      >
+                                        ${entry.title}
+                                      </cds-link>
+                                    `}
+                              </cds-breadcrumb-item>
+                            `;
+                          })}
+                        </cds-breadcrumb>
                       `
                     : html`
                         <p class="${blockClass}__tags-label">${itemsLabel}</p>

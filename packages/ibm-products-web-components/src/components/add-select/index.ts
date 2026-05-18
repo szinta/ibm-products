@@ -8,6 +8,5 @@
  */
 import './add-select/add-select';
 import './add-select-body/add-select-body';
-import './add-select-breadcrumbs/add-select-breadcrumbs';
 import './add-select-row/add-select-row';
 import './add-select-list/add-select-list';
