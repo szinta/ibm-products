@@ -5,7 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import {
+  Search,
+  Dropdown,
+  Button,
+  OverflowMenu,
+  OverflowMenuItem,
+} from '@carbon/react';
+import { ArrowsVertical } from '@carbon/react/icons';
 import { AddSelect } from '.';
 import styles from './_storybook-styles.scss?inline';
 import mdx from './AddSelect.mdx';
@@ -74,6 +82,66 @@ const simpleItems = [
     title: 'Item 5',
     subtitle: 'Description for item 5',
     value: 'item-5',
+  },
+];
+
+// Extended sample data with types for filter examples
+const itemsWithTypes = [
+  {
+    id: '1',
+    title: 'Apple',
+    subtitle: 'A delicious fruit',
+    value: 'apple',
+    type: 'Fruit',
+  },
+  {
+    id: '2',
+    title: 'Banana',
+    subtitle: 'Yellow and sweet',
+    value: 'banana',
+    type: 'Fruit',
+  },
+  {
+    id: '3',
+    title: 'Carrot',
+    subtitle: 'Orange vegetable',
+    value: 'carrot',
+    type: 'Vegetable',
+  },
+  {
+    id: '4',
+    title: 'Dates',
+    subtitle: 'Sweet dried fruit',
+    value: 'dates',
+    type: 'Fruit',
+  },
+  {
+    id: '5',
+    title: 'Eggplant',
+    subtitle: 'Purple vegetable',
+    value: 'eggplant',
+    type: 'Vegetable',
+  },
+  {
+    id: '6',
+    title: 'Fig',
+    subtitle: 'Soft sweet fruit',
+    value: 'fig',
+    type: 'Fruit',
+  },
+  {
+    id: '7',
+    title: 'Grape',
+    subtitle: 'Small round fruit',
+    value: 'grape',
+    type: 'Fruit',
+  },
+  {
+    id: '8',
+    title: 'Herbs',
+    subtitle: 'Aromatic plants',
+    value: 'herbs',
+    type: 'Vegetable',
   },
 ];
 
@@ -379,6 +447,505 @@ export const WithItemSummaryPanel = () => {
           onClose={() => setInfoPanelItemId(null)}
         />
       )}
+    </AddSelect>
+  );
+};
+
+/**
+ * With custom search using headerContent
+ *
+ * This example demonstrates how to use the `headerContent` prop to add custom search functionality.
+ * The user manages the search state and filtering logic.
+ */
+export const WithCustomSearch = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  // User handles filtering logic
+  const filteredItems = useMemo(() => {
+    if (!searchTerm) {
+      return itemsWithTypes;
+    }
+    return itemsWithTypes.filter((item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="Items"
+        itemCount={filteredItems.length}
+        headerContent={
+          <div style={{ padding: '1rem', borderBottom: '1px solid #e0e0e0' }}>
+            <Search
+              size="lg"
+              placeholder="Search items..."
+              labelText="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onClear={() => setSearchTerm('')}
+            />
+          </div>
+        }
+      >
+        <AddSelect.Content>
+          {filteredItems.map((item) => (
+            <AddSelect.Row
+              key={item.id}
+              itemId={item.id}
+              title={item.title}
+              subtitle={item.subtitle}
+              value={item.value}
+            />
+          ))}
+        </AddSelect.Content>
+      </AddSelect.Body>
+    </AddSelect>
+  );
+};
+
+/**
+ * With search and sort
+ *
+ * This example shows how to combine search and sort functionality using `headerContent`.
+ * Users can search items and sort them by different attributes.
+ */
+export const WithSearchAndSort = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'title' | 'id'>('title');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  // User handles all data processing
+  const processedItems = useMemo(() => {
+    let result = itemsWithTypes;
+
+    // Apply search filter
+    if (searchTerm) {
+      result = result.filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply sort
+    result = [...result].sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      const comparison = aVal.localeCompare(bVal);
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+
+    return result;
+  }, [searchTerm, sortBy, sortDirection]);
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="Items"
+        itemCount={processedItems.length}
+        headerContent={
+          <div
+            style={{
+              padding: '1rem',
+              borderBottom: '1px solid #e0e0e0',
+              display: 'flex',
+              gap: '1rem',
+              alignItems: 'flex-end',
+            }}
+          >
+            <div style={{ flex: 1 }}>
+              <Search
+                size="lg"
+                placeholder="Search items..."
+                labelText="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onClear={() => setSearchTerm('')}
+              />
+            </div>
+            <OverflowMenu
+              renderIcon={ArrowsVertical}
+              iconDescription="Sort options"
+              aria-label="Sort options"
+            >
+              <OverflowMenuItem
+                itemText="Title (A-Z)"
+                onClick={() => {
+                  setSortBy('title');
+                  setSortDirection('asc');
+                }}
+              />
+              <OverflowMenuItem
+                itemText="Title (Z-A)"
+                onClick={() => {
+                  setSortBy('title');
+                  setSortDirection('desc');
+                }}
+              />
+              <OverflowMenuItem
+                itemText="ID (Low-High)"
+                onClick={() => {
+                  setSortBy('id');
+                  setSortDirection('asc');
+                }}
+              />
+              <OverflowMenuItem
+                itemText="ID (High-Low)"
+                onClick={() => {
+                  setSortBy('id');
+                  setSortDirection('desc');
+                }}
+              />
+            </OverflowMenu>
+          </div>
+        }
+      >
+        <AddSelect.Content>
+          {processedItems.map((item) => (
+            <AddSelect.Row
+              key={item.id}
+              itemId={item.id}
+              title={item.title}
+              subtitle={item.subtitle}
+              value={item.value}
+            />
+          ))}
+        </AddSelect.Content>
+      </AddSelect.Body>
+    </AddSelect>
+  );
+};
+
+/**
+ * With search, filter and sort
+ *
+ * Complete example demonstrating search, filter, and sort functionality.
+ * This shows the full power of the composable approach where users have complete control.
+ */
+export const WithSearchFilterAndSort = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'title' | 'id'>('title');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  // User handles all data processing
+  const processedItems = useMemo(() => {
+    let result = itemsWithTypes;
+
+    // Apply search filter
+    if (searchTerm) {
+      result = result.filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply type filter
+    if (filterType !== 'all') {
+      result = result.filter((item) => item.type === filterType);
+    }
+
+    // Apply sort
+    result = [...result].sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      const comparison = aVal.localeCompare(bVal);
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+
+    return result;
+  }, [searchTerm, filterType, sortBy, sortDirection]);
+
+  const filterOptions = [
+    { id: 'all', text: 'All types' },
+    { id: 'Fruit', text: 'Fruits' },
+    { id: 'Vegetable', text: 'Vegetables' },
+  ];
+
+  const hasActiveFilters = searchTerm || filterType !== 'all';
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="Items"
+        itemCount={processedItems.length}
+        headerContent={
+          <div
+            style={{
+              padding: '1rem',
+              borderBottom: '1px solid #e0e0e0',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                alignItems: 'flex-end',
+                marginBottom: hasActiveFilters ? '1rem' : 0,
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <Search
+                  size="lg"
+                  placeholder="Search items..."
+                  labelText="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onClear={() => setSearchTerm('')}
+                />
+              </div>
+              <Dropdown
+                id="filter-dropdown"
+                titleText="Filter by type"
+                label="Select type"
+                items={filterOptions}
+                itemToString={(item) => (item ? item.text : '')}
+                selectedItem={
+                  filterOptions.find((opt) => opt.id === filterType) ||
+                  filterOptions[0]
+                }
+                onChange={({ selectedItem }) =>
+                  setFilterType(selectedItem?.id || 'all')
+                }
+              />
+              <OverflowMenu
+                renderIcon={ArrowsVertical}
+                iconDescription="Sort options"
+                aria-label="Sort options"
+              >
+                <OverflowMenuItem
+                  itemText="Title (A-Z)"
+                  onClick={() => {
+                    setSortBy('title');
+                    setSortDirection('asc');
+                  }}
+                />
+                <OverflowMenuItem
+                  itemText="Title (Z-A)"
+                  onClick={() => {
+                    setSortBy('title');
+                    setSortDirection('desc');
+                  }}
+                />
+                <OverflowMenuItem
+                  itemText="ID (Low-High)"
+                  onClick={() => {
+                    setSortBy('id');
+                    setSortDirection('asc');
+                  }}
+                />
+                <OverflowMenuItem
+                  itemText="ID (High-Low)"
+                  onClick={() => {
+                    setSortBy('id');
+                    setSortDirection('desc');
+                  }}
+                />
+              </OverflowMenu>
+            </div>
+            {hasActiveFilters && (
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {searchTerm && (
+                  <Button
+                    kind="ghost"
+                    size="sm"
+                    onClick={() => setSearchTerm('')}
+                  >
+                    Clear search: &quot;{searchTerm}&quot;
+                  </Button>
+                )}
+                {filterType !== 'all' && (
+                  <Button
+                    kind="ghost"
+                    size="sm"
+                    onClick={() => setFilterType('all')}
+                  >
+                    Clear filter: {filterType}
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        }
+      >
+        <AddSelect.Content>
+          {processedItems.length > 0 ? (
+            processedItems.map((item) => (
+              <AddSelect.Row
+                key={item.id}
+                itemId={item.id}
+                title={item.title}
+                subtitle={`${item.subtitle} • ${item.type}`}
+                value={item.value}
+              />
+            ))
+          ) : (
+            <div
+              style={{ padding: '2rem', textAlign: 'center', color: '#525252' }}
+            >
+              No items match your search and filter criteria
+            </div>
+          )}
+        </AddSelect.Content>
+      </AddSelect.Body>
+    </AddSelect>
+  );
+};
+
+/**
+ * With default search and custom actions
+ *
+ * This example shows how to use the default search with custom filter/sort actions
+ * using the `actionsSlot` prop. This is the simplest way to add filter/sort while
+ * keeping the built-in search functionality.
+ */
+export const WithDefaultSearchAndActions = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [filterType, setFilterType] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'title' | 'id'>('title');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  // User handles filtering and sorting
+  const processedItems = useMemo(() => {
+    let result = itemsWithTypes;
+
+    // Apply type filter
+    if (filterType !== 'all') {
+      result = result.filter((item) => item.type === filterType);
+    }
+
+    // Apply sort
+    result = [...result].sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      const comparison = aVal.localeCompare(bVal);
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+
+    return result;
+  }, [filterType, sortBy, sortDirection]);
+
+  const filterOptions = [
+    { id: 'all', text: 'All types' },
+    { id: 'Fruit', text: 'Fruits' },
+    { id: 'Vegetable', text: 'Vegetables' },
+  ];
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="Items"
+        globalSearchLabel="Search"
+        globalSearchPlaceholder="Search items..."
+        itemCount={processedItems.length}
+        actionsSlot={
+          <>
+            <Dropdown
+              id="filter-dropdown-actions"
+              titleText="Filter by type"
+              label="Select type"
+              items={filterOptions}
+              itemToString={(item) => (item ? item.text : '')}
+              selectedItem={
+                filterOptions.find((opt) => opt.id === filterType) ||
+                filterOptions[0]
+              }
+              onChange={({ selectedItem }) =>
+                setFilterType(selectedItem?.id || 'all')
+              }
+            />
+            <OverflowMenu
+              renderIcon={ArrowsVertical}
+              iconDescription="Sort options"
+              aria-label="Sort options"
+            >
+              <OverflowMenuItem
+                itemText="Title (A-Z)"
+                onClick={() => {
+                  setSortBy('title');
+                  setSortDirection('asc');
+                }}
+              />
+              <OverflowMenuItem
+                itemText="Title (Z-A)"
+                onClick={() => {
+                  setSortBy('title');
+                  setSortDirection('desc');
+                }}
+              />
+            </OverflowMenu>
+          </>
+        }
+      >
+        <AddSelect.Content>
+          {processedItems.map((item) => (
+            <AddSelect.Row
+              key={item.id}
+              itemId={item.id}
+              title={item.title}
+              subtitle={`${item.subtitle} • ${item.type}`}
+              value={item.value}
+            />
+          ))}
+        </AddSelect.Content>
+      </AddSelect.Body>
     </AddSelect>
   );
 };

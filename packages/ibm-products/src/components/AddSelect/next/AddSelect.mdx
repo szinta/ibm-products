@@ -147,6 +147,277 @@ Displays detailed information about a specific item.
 
 - `title` - Panel title
 - `item` - Item data or custom content
+
+## Using Default Search with Custom Actions
+
+The `actionsSlot` prop allows you to add custom filter/sort controls alongside
+the built-in search functionality. This is the simplest approach when you want
+to keep the default search behavior.
+
+### Example: Default Search + Filter + Sort
+
+```jsx
+<AddSelect.Body
+  globalSearchLabel="Search"
+  globalSearchPlaceholder="Search items..."
+  onSearch={handleSearch}
+  itemCount={filteredItems.length}
+  actionsSlot={
+    <>
+      <Dropdown items={filterOptions} onChange={handleFilter} />
+      <OverflowMenu renderIcon={ArrowsVertical}>
+        <OverflowMenuItem itemText="Sort A-Z" onClick={handleSort} />
+      </OverflowMenu>
+    </>
+  }
+>
+  <AddSelect.Content>
+    {filteredItems.map((item) => (
+      <AddSelect.Row {...item} />
+    ))}
+  </AddSelect.Content>
+</AddSelect.Body>
+```
+
+### When to Use Each Approach
+
+**Use `actionsSlot`** when:
+
+- ✅ You want the default search behavior
+- ✅ You only need to add filter/sort controls
+- ✅ You want the simplest implementation
+
+**Use `headerContent`** when:
+
+- ✅ You need complete control over the header
+- ✅ You want custom search behavior
+- ✅ You need a custom layout
+
+## Custom Search, Filter, and Sort
+
+The composable AddSelect gives you complete control over search, filter, and
+sort functionality. Instead of providing built-in components, you use the
+`headerContent` prop to add your own UI using Carbon components.
+
+### Why This Approach?
+
+- **Full Control**: You manage the state and logic
+- **Flexibility**: Use any Carbon components or custom UI
+- **Simplicity**: Clear separation between UI (component) and logic (your code)
+- **Composability**: True to the composable pattern
+
+### Basic Search Example
+
+```jsx
+import { Search } from '@carbon/react';
+
+function MyComponent() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // You handle the filtering
+  const filteredItems = items.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <AddSelect.Body
+      itemCount={filteredItems.length}
+      headerContent={
+        <div style={{ padding: '1rem' }}>
+          <Search
+            placeholder="Search items..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onClear={() => setSearchTerm('')}
+          />
+        </div>
+      }
+    >
+      <AddSelect.Content>
+        {filteredItems.map((item) => (
+          <AddSelect.Row key={item.id} {...item} />
+        ))}
+      </AddSelect.Content>
+    </AddSelect.Body>
+  );
+}
+```
+
+### Search + Sort Example
+
+```jsx
+import { Search, OverflowMenu, OverflowMenuItem } from '@carbon/react';
+import { ArrowsVertical } from '@carbon/react/icons';
+
+function MyComponent() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('title');
+  const [sortDirection, setSortDirection] = useState('asc');
+
+  // You handle all data processing
+  const processedItems = useMemo(() => {
+    let result = items.filter((item) => item.title.includes(searchTerm));
+
+    result.sort((a, b) => {
+      const comparison = a[sortBy].localeCompare(b[sortBy]);
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+
+    return result;
+  }, [items, searchTerm, sortBy, sortDirection]);
+
+  return (
+    <AddSelect.Body
+      itemCount={processedItems.length}
+      headerContent={
+        <div style={{ padding: '1rem', display: 'flex', gap: '1rem' }}>
+          <Search
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <OverflowMenu renderIcon={ArrowsVertical}>
+            <OverflowMenuItem
+              itemText="Title (A-Z)"
+              onClick={() => {
+                setSortBy('title');
+                setSortDirection('asc');
+              }}
+            />
+            <OverflowMenuItem
+              itemText="Title (Z-A)"
+              onClick={() => {
+                setSortBy('title');
+                setSortDirection('desc');
+              }}
+            />
+          </OverflowMenu>
+        </div>
+      }
+    >
+      <AddSelect.Content>
+        {processedItems.map((item) => (
+          <AddSelect.Row key={item.id} {...item} />
+        ))}
+      </AddSelect.Content>
+    </AddSelect.Body>
+  );
+}
+```
+
+### Search + Filter + Sort Example
+
+```jsx
+import {
+  Search,
+  Dropdown,
+  OverflowMenu,
+  OverflowMenuItem,
+  Button,
+} from '@carbon/react';
+
+function MyComponent() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
+  const [sortBy, setSortBy] = useState('title');
+
+  // You control all the logic
+  const processedItems = useMemo(() => {
+    let result = items;
+
+    // Apply search
+    if (searchTerm) {
+      result = result.filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply filter
+    if (filterType !== 'all') {
+      result = result.filter((item) => item.type === filterType);
+    }
+
+    // Apply sort
+    result = [...result].sort((a, b) => a[sortBy].localeCompare(b[sortBy]));
+
+    return result;
+  }, [items, searchTerm, filterType, sortBy]);
+
+  return (
+    <AddSelect.Body
+      itemCount={processedItems.length}
+      headerContent={
+        <div style={{ padding: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+            <Search
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Dropdown
+              id="filter"
+              items={[
+                { id: 'all', text: 'All' },
+                { id: 'type1', text: 'Type 1' },
+                { id: 'type2', text: 'Type 2' },
+              ]}
+              onChange={({ selectedItem }) => setFilterType(selectedItem.id)}
+            />
+            <OverflowMenu renderIcon={ArrowsVertical}>
+              <OverflowMenuItem
+                itemText="Sort by Title"
+                onClick={() => setSortBy('title')}
+              />
+              <OverflowMenuItem
+                itemText="Sort by Date"
+                onClick={() => setSortBy('date')}
+              />
+            </OverflowMenu>
+          </div>
+          {(searchTerm || filterType !== 'all') && (
+            <div>
+              <Button size="sm" kind="ghost" onClick={() => setSearchTerm('')}>
+                Clear search
+              </Button>
+              <Button
+                size="sm"
+                kind="ghost"
+                onClick={() => setFilterType('all')}
+              >
+                Clear filter
+              </Button>
+            </div>
+          )}
+        </div>
+      }
+    >
+      <AddSelect.Content>
+        {processedItems.map((item) => (
+          <AddSelect.Row key={item.id} {...item} />
+        ))}
+      </AddSelect.Content>
+    </AddSelect.Body>
+  );
+}
+```
+
+### Key Points
+
+1. **You manage state**: Use `useState` for search terms, filters, sort options
+2. **You process data**: Use `useMemo` to filter and sort items efficiently
+3. **You control UI**: Use `headerContent` to render any Carbon components
+4. **Component provides structure**: AddSelect.Body provides the layout and
+   container
+
+### Benefits
+
+- ✅ **Simple**: No complex prop APIs to learn
+- ✅ **Flexible**: Use any UI components you want
+- ✅ **Performant**: You control when to re-render with `useMemo`
+- ✅ **Testable**: Easy to test your filtering/sorting logic separately
+- ✅ **Maintainable**: Clear separation of concerns
+
+For complete working examples, see the "Search Filter Sort Examples" stories in
+Storybook.
+
 - `onClose` - Close button handler
 - `renderContent` - Custom content renderer
 

@@ -45,6 +45,20 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
 
 .#{$block-class__next}__search {
   margin-block-end: $spacing-05;
+
+  &--with-actions {
+    display: flex;
+    align-items: flex-end;
+  }
+}
+
+.#{$block-class__next}__search-input {
+  flex: 1;
+}
+
+.#{$block-class__next}__global-actions {
+  display: flex;
+  align-items: flex-end;
 }
 
 .#{$block-class__next}__sub-header {

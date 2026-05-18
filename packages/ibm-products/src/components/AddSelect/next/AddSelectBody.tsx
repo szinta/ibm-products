@@ -63,9 +63,13 @@ export interface AddSelectBodyProps {
    */
   onBreadcrumbClick?: (index: number) => void;
   /**
-   * Custom header content (slot)
+   * Custom header content (slot) - replaces entire header
    */
   headerContent?: ReactNode;
+  /**
+   * Actions slot - adds custom actions (filter/sort) next to default search
+   */
+  actionsSlot?: ReactNode;
 }
 
 const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
@@ -82,6 +86,7 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
       onSearch,
       onBreadcrumbClick,
       headerContent,
+      actionsSlot,
       ...rest
     },
     ref: ForwardedRef<HTMLDivElement>
@@ -106,15 +111,30 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
         <div className={`${blockClass}__header`}>
           {headerContent || (
             <>
-              {/* Search */}
-              <div className={`${blockClass}__search`}>
-                <Search
-                  labelText={globalSearchLabel}
-                  placeholder={globalSearchPlaceholder}
-                  size="lg"
-                  onChange={handleSearch}
-                  value={searchTerm}
-                />
+              {/* Search with optional actions */}
+              <div
+                className={cx(`${blockClass}__search`, {
+                  [`${blockClass}__search--with-actions`]: actionsSlot,
+                })}
+              >
+                <div
+                  className={
+                    actionsSlot ? `${blockClass}__search-input` : undefined
+                  }
+                >
+                  <Search
+                    labelText={globalSearchLabel}
+                    placeholder={globalSearchPlaceholder}
+                    size="lg"
+                    onChange={handleSearch}
+                    value={searchTerm}
+                  />
+                </div>
+                {actionsSlot && (
+                  <div className={`${blockClass}__global-actions`}>
+                    {actionsSlot}
+                  </div>
+                )}
               </div>
 
               {/* Sub-header with breadcrumbs or item label */}
@@ -175,6 +195,7 @@ const AddSelectBody = forwardRef<HTMLDivElement, AddSelectBodyProps>(
 );
 
 AddSelectBody.propTypes = {
+  actionsSlot: PropTypes.node,
   children: PropTypes.node,
   className: PropTypes.string,
   globalSearchLabel: PropTypes.string,
