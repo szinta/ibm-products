@@ -62,6 +62,11 @@ export interface AddSelectRowProps {
    */
   icon?: ReactNode;
   /**
+   * Custom content to render after the title/subtitle section.
+   * Useful for adding badges, tags, or other metadata to the row.
+   */
+  children?: ReactNode;
+  /**
    * Whether to show the info panel view icon for this item
    */
   hasInfoPanel?: boolean;
@@ -95,6 +100,7 @@ const AddSelectRow = forwardRef<HTMLDivElement, AddSelectRowProps>(
       hasChildren = false,
       parentId = '',
       icon,
+      children,
       hasInfoPanel = false,
       onInfoPanelClick,
       infoPanelIconDescription = 'View details',
@@ -182,6 +188,7 @@ const AddSelectRow = forwardRef<HTMLDivElement, AddSelectRowProps>(
                   </div>
                 )}
               </div>
+              {children}
             </div>
 
             {hasInfoPanel && (
@@ -224,6 +231,7 @@ const AddSelectRow = forwardRef<HTMLDivElement, AddSelectRowProps>(
 );
 
 AddSelectRow.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
   disabled: PropTypes.bool,
   hasChildren: PropTypes.bool,

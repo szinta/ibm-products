@@ -24,7 +24,7 @@ const blockClass = `${prefix}--add-select__next-row`;
 /**
  * Add Select Row component - represents a single selectable row
  * @element c4p-add-select-row
- * @slot default - The main content of the row (title, subtitle, etc.)
+ * @slot default - Custom content to render after the title/subtitle section. Useful for adding badges, tags, or other metadata to the row.
  * @slot icon - Optional icon slot
  * @slot meta - Optional metadata slot
  * @fires c4p-add-select-row-select - Fired when row is selected/deselected
@@ -215,6 +215,7 @@ class CDSAddSelectRow extends LitElement {
                 ${subtitle &&
                 html`<div class="${blockClass}__subtitle">${subtitle}</div>`}
               </div>
+              <slot></slot>
               <slot name="meta"></slot>
             </div>
 
