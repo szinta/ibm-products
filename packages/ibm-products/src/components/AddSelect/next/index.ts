@@ -14,7 +14,7 @@ export type { AddSelectRowProps } from './AddSelectRow';
 export type { AddSelectSelectionSummaryProps } from './AddSelectSelectionSummary';
 export type { AddSelectSelectionSummaryItemProps } from './AddSelectSelectionSummaryItem';
 export type {
-  AddSelectItemInfoPanelProps,
+  AddSelectItemSummaryPanelProps,
   ItemDetailEntry,
-} from './AddSelectItemInfoPanel';
+} from './AddSelectItemSummaryPanel';
 export type { AddSelectContextType } from './context';

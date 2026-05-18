@@ -626,9 +626,9 @@ $block-class__next: #{$pkg-prefix}--add-select__next;
 }
 
 // ──────────────────────────────────────────────────────────────
-// AddSelectItemInfoPanel - Item info view
+// AddSelectItemSummaryPanel - Item summary view
 // ──────────────────────────────────────────────────────────────
-.#{$block-class__next}__item-info-panel {
+.#{$block-class__next}__item-summary-panel {
   padding: $spacing-05;
 
   &-header {

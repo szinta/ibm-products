@@ -218,7 +218,7 @@ export const MultiAddSelectWithHierarchy = () => {
 
           <Tearsheet.SummaryContent className="summary-content-no-padding">
             {infoPanel.show && infoPanel.item ? (
-              <AddSelect.ItemInfoPanel
+              <AddSelect.ItemSummaryPanel
                 title="Item details"
                 item={infoPanel.item.meta}
                 onClose={handleCloseInfo}

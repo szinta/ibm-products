@@ -28,7 +28,7 @@ export default {
     Row: AddSelect.Row,
     SelectionSummary: AddSelect.SelectionSummary,
     SelectionSummaryItem: AddSelect.SelectionSummaryItem,
-    ItemInfoPanel: AddSelect.ItemInfoPanel,
+    ItemSummaryPanel: AddSelect.ItemSummaryPanel,
   },
   argTypes: {
     children: {
@@ -323,9 +323,9 @@ export const WithSelectionSummary = () => {
 };
 
 /**
- * With item info panel - Detailed item information
+ * With item summary panel - Detailed item information
  */
-export const WithItemInfoPanel = () => {
+export const WithItemSummaryPanel = () => {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [infoPanelItemId, setInfoPanelItemId] = useState<string | null>(null);
 
@@ -373,7 +373,7 @@ export const WithItemInfoPanel = () => {
         </AddSelect.Content>
       </AddSelect.Body>
       {infoPanelItem && (
-        <AddSelect.ItemInfoPanel
+        <AddSelect.ItemSummaryPanel
           title="Item details"
           item={infoPanelItem}
           onClose={() => setInfoPanelItemId(null)}

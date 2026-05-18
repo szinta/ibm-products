@@ -20,7 +20,7 @@ import { blockClass } from './context';
 
 /**
  * ----------------
- * AddSelectItemInfoPanel
+ * AddSelectItemSummaryPanel
  * ----------------
  */
 
@@ -30,7 +30,7 @@ export interface ItemDetailEntry {
   value?: string;
 }
 
-export interface AddSelectItemInfoPanelProps {
+export interface AddSelectItemSummaryPanelProps {
   /**
    * Panel title
    */
@@ -62,10 +62,10 @@ export interface AddSelectItemInfoPanelProps {
 }
 
 /**
- * AddSelectItemInfoPanel - Displays detailed information about a specific item
+ * AddSelectItemSummaryPanel - Displays detailed information about a specific item
  * @example
  * ```jsx
- * <AddSelect.ItemInfoPanel
+ * <AddSelect.ItemSummaryPanel
  *   title="Item details"
  *   item={item}
  *   onClose={handleClose}
@@ -73,9 +73,9 @@ export interface AddSelectItemInfoPanelProps {
  * />
  * ```
  */
-const AddSelectItemInfoPanel = forwardRef<
+const AddSelectItemSummaryPanel = forwardRef<
   HTMLDivElement,
-  AddSelectItemInfoPanelProps
+  AddSelectItemSummaryPanelProps
 >(
   (
     {
@@ -90,7 +90,7 @@ const AddSelectItemInfoPanel = forwardRef<
     },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
-    const panelClasses = cx(`${blockClass}__item-info-panel`, className);
+    const panelClasses = cx(`${blockClass}__item-summary-panel`, className);
 
     // Render content based on item type
     const renderItemContent = () => {
@@ -117,12 +117,12 @@ const AddSelectItemInfoPanel = forwardRef<
         return item.map((entry) => (
           <div
             key={entry.id || entry.title}
-            className={`${blockClass}__item-info-panel-entry`}
+            className={`${blockClass}__item-summary-panel-entry`}
           >
-            <p className={`${blockClass}__item-info-panel-entry-title`}>
+            <p className={`${blockClass}__item-summary-panel-entry-title`}>
               {entry.title}
             </p>
-            <p className={`${blockClass}__item-info-panel-entry-body`}>
+            <p className={`${blockClass}__item-summary-panel-entry-body`}>
               {entry.value}
             </p>
           </div>
@@ -171,11 +171,14 @@ const AddSelectItemInfoPanel = forwardRef<
       });
 
       return entries.map((entry) => (
-        <div key={entry.id} className={`${blockClass}__item-info-panel-entry`}>
-          <p className={`${blockClass}__item-info-panel-entry-title`}>
+        <div
+          key={entry.id}
+          className={`${blockClass}__item-summary-panel-entry`}
+        >
+          <p className={`${blockClass}__item-summary-panel-entry-title`}>
             {entry.title}
           </p>
-          <p className={`${blockClass}__item-info-panel-entry-body`}>
+          <p className={`${blockClass}__item-summary-panel-entry-body`}>
             {entry.value}
           </p>
         </div>
@@ -185,15 +188,15 @@ const AddSelectItemInfoPanel = forwardRef<
     return (
       <div className={panelClasses} ref={ref} {...rest}>
         {/* Header with title and close button */}
-        <div className={`${blockClass}__item-info-panel-header`}>
-          <p className={`${blockClass}__item-info-panel-title`}>{title}</p>
+        <div className={`${blockClass}__item-summary-panel-header`}>
+          <p className={`${blockClass}__item-summary-panel-title`}>{title}</p>
           {onClose && (
             <IconButton
               label={closeIconDescription}
               onClick={onClose}
               kind="ghost"
               size="sm"
-              className={`${blockClass}__item-info-panel-close`}
+              className={`${blockClass}__item-summary-panel-close`}
             >
               <Close size={16} />
             </IconButton>
@@ -201,7 +204,7 @@ const AddSelectItemInfoPanel = forwardRef<
         </div>
 
         {/* Body content */}
-        <div className={`${blockClass}__item-info-panel-body`}>
+        <div className={`${blockClass}__item-summary-panel-body`}>
           {renderItemContent()}
         </div>
       </div>
@@ -209,7 +212,7 @@ const AddSelectItemInfoPanel = forwardRef<
   }
 );
 
-AddSelectItemInfoPanel.propTypes = {
+AddSelectItemSummaryPanel.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   closeIconDescription: PropTypes.string,
@@ -226,6 +229,6 @@ AddSelectItemInfoPanel.propTypes = {
   title: PropTypes.string,
 };
 
-AddSelectItemInfoPanel.displayName = 'AddSelectItemInfoPanel';
+AddSelectItemSummaryPanel.displayName = 'AddSelectItemSummaryPanel';
 
-export default AddSelectItemInfoPanel;
+export default AddSelectItemSummaryPanel;
