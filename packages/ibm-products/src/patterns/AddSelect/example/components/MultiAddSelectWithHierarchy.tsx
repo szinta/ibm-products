@@ -163,9 +163,8 @@ const RecursiveColumn: React.FC<ColumnProps> = ({
     <AddSelectContext.Provider value={columnContext}>
       <AddSelect.Column
         title={title}
-        showSearch={true}
         searchPlaceholder={columnSearchPlaceholder}
-        onSearchChange={handleColumnSearch}
+        onSearch={handleColumnSearch}
         itemCount={filteredItems.length}
         multi={true}
       >
@@ -315,13 +314,9 @@ export const MultiAddSelectWithHierarchy = forwardRef<
           searchResultsTitle={searchResultsTitle}
           itemCount={currentItems.length}
           onSearch={handleGlobalSearch}
+          path={navigationPath}
+          onBreadcrumbClick={onBreadcrumbClick}
         >
-          {navigationPath.length > 0 && (
-            <AddSelect.Breadcrumbs
-              path={navigationPath}
-              onBreadcrumbClick={onBreadcrumbClick}
-            />
-          )}
           <AddSelect.Content layout="horizontal">
             {currentItems.length > 0 ? (
               <RecursiveColumn

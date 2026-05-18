@@ -310,12 +310,20 @@ export const WithSearchAndFilters = () => {
         <AddSelect.Content>
           <AddSelect.Column
             title="Available items"
-            showSearch
             searchPlaceholder="Search items"
-            onSearchChange={setSearchTerm}
-            showSort
-            sortOptions={[{ id: 'title', label: 'Title' }]}
+            onSearch={setSearchTerm}
             itemCount={filteredItems.length}
+            actionsSlot={
+              <Button
+                kind="ghost"
+                size="md"
+                hasIconOnly
+                iconDescription="Sort"
+                tooltipPosition="bottom"
+              >
+                <ArrowsVertical />
+              </Button>
+            }
           >
             {filteredItems.map((item) => (
               <AddSelect.Row

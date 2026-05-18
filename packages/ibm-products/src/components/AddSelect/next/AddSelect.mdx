@@ -98,6 +98,50 @@ Container for items with keyboard navigation support.
 - **Arrow Up/Down** - Navigate between items
 - **Arrow Right** - Navigate into children (if available)
 - **Enter/Space** - Select/deselect item
+
+### AddSelect.Column
+
+A composable column component that wraps AddSelectRow items. Provides optional
+search functionality with custom actions slot.
+
+**Props:**
+
+- `title` - Column title displayed in the header
+- `searchLabel` - Label text for the search input
+- `searchPlaceholder` - Placeholder text for the search input
+- `onSearch` - Callback when search value changes
+- `actionsSlot` - Custom actions (filter/sort buttons) next to search
+- `multi` - Enable multi-selection (checkboxes) or single selection (radio
+  buttons)
+- `showSelectAll` - Show the "Select All" checkbox (only when multi is true)
+- `itemCount` - Total number of items in the column
+- `allSelected` - Whether all items are currently selected
+- `onSelectAll` - Callback when "Select All" is toggled
+
+**Example with custom actions:**
+
+```jsx
+<AddSelect.Column
+  title="Available items"
+  searchPlaceholder="Search items"
+  onSearch={handleSearch}
+  actionsSlot={
+    <>
+      <IconButton kind="ghost" label="Sort">
+        <ArrowsVertical />
+      </IconButton>
+      <IconButton kind="ghost" label="Filter">
+        <Filter />
+      </IconButton>
+    </>
+  }
+>
+  {items.map((item) => (
+    <AddSelect.Row key={item.id} {...item} />
+  ))}
+</AddSelect.Column>
+```
+
 - **Ctrl+Home** - Jump to first item
 - **Ctrl+End** - Jump to last item
 

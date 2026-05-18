@@ -14,15 +14,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {
-  Search,
-  Tag,
-  Checkbox,
-  Popover,
-  PopoverContent,
-  IconButton,
-} from '@carbon/react';
-import { Filter, ArrowsVertical } from '@carbon/react/icons';
+import { Search, Tag, Checkbox } from '@carbon/react';
 import { blockClass, AddSelectContext } from './context';
 
 /**
@@ -30,14 +22,9 @@ import { blockClass, AddSelectContext } from './context';
  * AddSelectColumn
  * ----------------
  * A composable column component that wraps AddSelectRow items.
- * Provides optional search, sort, and filter functionality.
+ * Provides optional search functionality with custom actions slot.
  * Lives inside AddSelectContent and can have multiple instances.
  */
-
-export interface SortOption {
-  id: string;
-  label: string;
-}
 
 export interface AddSelectColumnProps {
   /**
@@ -49,9 +36,9 @@ export interface AddSelectColumnProps {
    */
   title?: string;
   /**
-   * Whether to show the search input
+   * Label text for the search input
    */
-  showSearch?: boolean;
+  searchLabel?: string;
   /**
    * Placeholder text for the search input
    */
@@ -59,39 +46,11 @@ export interface AddSelectColumnProps {
   /**
    * Callback when search value changes
    */
-  onSearchChange?: (value: string) => void;
+  onSearch?: (value: string) => void;
   /**
-   * Whether to show the sort button
+   * Actions slot - adds custom actions (filter/sort) next to search
    */
-  showSort?: boolean;
-  /**
-   * Array of sort options
-   */
-  sortOptions?: SortOption[];
-  /**
-   * Callback when sort changes
-   */
-  onSortChange?: (attribute: string, direction: 'asc' | 'desc') => void;
-  /**
-   * Label for the sort button
-   */
-  sortLabel?: string;
-  /**
-   * Whether to show the filter button
-   */
-  showFilter?: boolean;
-  /**
-   * Array of filter options
-   */
-  filterOptions?: string[];
-  /**
-   * Callback when filters change
-   */
-  onFilterChange?: (filters: string[]) => void;
-  /**
-   * Label for the filter button
-   */
-  filterLabel?: string;
+  actionsSlot?: ReactNode;
   /**
    * Whether to enable multi-selection (checkboxes) or single selection (radio buttons)
    */
@@ -123,17 +82,10 @@ const AddSelectColumn = forwardRef<HTMLDivElement, AddSelectColumnProps>(
     {
       children,
       title = '',
-      showSearch = false,
+      searchLabel = 'Search',
       searchPlaceholder = 'Search',
-      onSearchChange,
-      showSort = false,
-      sortOptions = [],
-      onSortChange,
-      sortLabel = 'Sort',
-      showFilter = false,
-      filterOptions = [],
-      onFilterChange,
-      filterLabel = 'Filter',
+      onSearch,
+      actionsSlot,
       multi = false,
       showSelectAll = false,
       itemCount = 0,
@@ -145,26 +97,11 @@ const AddSelectColumn = forwardRef<HTMLDivElement, AddSelectColumnProps>(
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterOpen, setFilterOpen] = useState(false);
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-    const [sortAttribute, setSortAttribute] = useState('');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
-    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setSearchTerm(value);
-      onSearchChange?.(value);
-    };
-
-    const handleFilterChange = (checked: boolean, option: string) => {
-      let newFilters: string[];
-      if (checked) {
-        newFilters = [...selectedFilters, option];
-      } else {
-        newFilters = selectedFilters.filter((f) => f !== option);
-      }
-      setSelectedFilters(newFilters);
-      onFilterChange?.(newFilters);
+      onSearch?.(value);
     };
 
     const handleSelectAll = (
@@ -179,81 +116,31 @@ const AddSelectColumn = forwardRef<HTMLDivElement, AddSelectColumnProps>(
     return (
       <AddSelectContext.Provider value={{ multi }}>
         <div className={columnClasses} ref={ref} {...rest}>
-          {/* Search and Controls Section */}
-          {(showSearch || showSort || showFilter) && (
-            <div className={`${blockClass}-column__search-bar`}>
-              <div className={`${blockClass}-column__search-wrapper`}>
-                {showSearch && (
-                  <Search
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    placeholder={searchPlaceholder}
-                    className={`${blockClass}-column__search-input`}
-                    labelText={searchPlaceholder}
-                    size="md"
-                  />
-                )}
-                {(showSort || showFilter) && (
-                  <div className={`${blockClass}-column__controls`}>
-                    {showSort && sortOptions.length > 0 && (
-                      <IconButton
-                        label={sortLabel}
-                        kind="ghost"
-                        size="md"
-                        align="bottom"
-                        onClick={() => {
-                          // Toggle sort direction
-                          const newDirection =
-                            sortDirection === 'asc' ? 'desc' : 'asc';
-                          setSortDirection(newDirection);
-                          if (sortOptions[0]) {
-                            setSortAttribute(sortOptions[0].id);
-                            onSortChange?.(sortOptions[0].id, newDirection);
-                          }
-                        }}
-                        className={`${blockClass}-column__sort-button`}
-                      >
-                        <ArrowsVertical />
-                      </IconButton>
-                    )}
-                    {showFilter && filterOptions.length > 0 && (
-                      <Popover
-                        align="bottom-right"
-                        open={filterOpen}
-                        onRequestClose={() => setFilterOpen(false)}
-                      >
-                        <IconButton
-                          label={filterLabel}
-                          kind="ghost"
-                          size="md"
-                          align="bottom"
-                          onClick={() => setFilterOpen(!filterOpen)}
-                          className={`${blockClass}-column__filter-button`}
-                        >
-                          <Filter />
-                        </IconButton>
-                        <PopoverContent
-                          className={`${blockClass}-column__filter-popover`}
-                        >
-                          {filterOptions.map((option) => (
-                            <Checkbox
-                              key={option}
-                              id={`filter-${option}`}
-                              labelText={option}
-                              checked={selectedFilters.includes(option)}
-                              onChange={(_event, { checked }) =>
-                                handleFilterChange(checked, option)
-                              }
-                            />
-                          ))}
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </div>
-                )}
-              </div>
+          {/* Search with optional actions */}
+          <div
+            className={cx(`${blockClass}-column__search`, {
+              [`${blockClass}-column__search--with-actions`]: actionsSlot,
+            })}
+          >
+            <div
+              className={
+                actionsSlot ? `${blockClass}-column__search-input` : undefined
+              }
+            >
+              <Search
+                labelText={searchLabel}
+                placeholder={searchPlaceholder}
+                size="md"
+                onChange={handleSearch}
+                value={searchTerm}
+              />
             </div>
-          )}
+            {actionsSlot && (
+              <div className={`${blockClass}-column__actions`}>
+                {actionsSlot}
+              </div>
+            )}
+          </div>
 
           {/* Header with Select All */}
           {(showSelectAll || title) && (
@@ -299,33 +186,19 @@ const AddSelectColumn = forwardRef<HTMLDivElement, AddSelectColumnProps>(
 );
 
 AddSelectColumn.propTypes = {
+  actionsSlot: PropTypes.node,
   allSelected: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.string,
-  filterLabel: PropTypes.string,
-  filterOptions: PropTypes.arrayOf(PropTypes.string),
   itemCount: PropTypes.number,
   multi: PropTypes.bool,
   /**@ts-ignore */
-  onFilterChange: PropTypes.func,
-  /**@ts-ignore */
-  onSearchChange: PropTypes.func,
+  onSearch: PropTypes.func,
   /**@ts-ignore */
   onSelectAll: PropTypes.func,
-  /**@ts-ignore */
-  onSortChange: PropTypes.func,
+  searchLabel: PropTypes.string,
   searchPlaceholder: PropTypes.string,
-  showFilter: PropTypes.bool,
-  showSearch: PropTypes.bool,
   showSelectAll: PropTypes.bool,
-  showSort: PropTypes.bool,
-  sortLabel: PropTypes.string,
-  sortOptions: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
   title: PropTypes.string,
 };
 
