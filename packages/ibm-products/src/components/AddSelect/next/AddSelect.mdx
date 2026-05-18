@@ -176,7 +176,7 @@ Individual selectable item.
 
 ### AddSelect.SelectionSummary
 
-Displays list of selected items.
+Displays list of selected items with customizable header.
 
 **Props:**
 
@@ -185,6 +185,45 @@ Displays list of selected items.
 - `showCount` - Show count badge
 - `showEditIcon` - Show edit icon
 - `onEdit` - Edit icon click handler
+- `editIconDescription` - Edit icon aria-label
+- `headerContent` - Custom header content (replaces entire header)
+- `headerActions` - Custom actions alongside the edit icon
+- `renderItem` - Custom item renderer function
+- `emptyState` - Custom empty state component
+
+**Example with header actions:**
+
+```jsx
+<AddSelect.SelectionSummary
+  title="Selected items"
+  selectedItems={selectedItems}
+  showCount
+  headerActions={
+    <>
+      <IconButton label="Filter" kind="ghost" size="sm">
+        <Filter />
+      </IconButton>
+      <IconButton label="Sort" kind="ghost" size="sm">
+        <Sort />
+      </IconButton>
+    </>
+  }
+/>
+```
+
+**Example with custom header:**
+
+```jsx
+<AddSelect.SelectionSummary
+  selectedItems={selectedItems}
+  headerContent={
+    <div className="custom-header">
+      <h3>My Custom Header</h3>
+      <Button size="sm">Export</Button>
+    </div>
+  }
+/>
+```
 
 ### AddSelect.ItemSummaryPanel
 

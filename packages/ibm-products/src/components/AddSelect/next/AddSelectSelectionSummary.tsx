@@ -60,11 +60,20 @@ export interface AddSelectSelectionSummaryProps {
    * Custom item renderer
    */
   renderItem?: (item: AddSelectItem) => ReactNode;
+  /**
+   * Custom header content (slot) - replaces entire header section
+   */
+  headerContent?: ReactNode;
+  /**
+   * Header actions slot - adds custom actions alongside the edit icon
+   */
+  headerActions?: ReactNode;
 }
 
 /**
  * AddSelectSelectionSummary - Displays list of selected items
  * @example
+ * Basic usage:
  * ```jsx
  * <AddSelect.SelectionSummaryPanel
  *   title="Selected items"
@@ -72,6 +81,38 @@ export interface AddSelectSelectionSummaryProps {
  *   showCount
  *   showEditIcon
  *   onEdit={handleEdit}
+ * />
+ * ```
+ *
+ * With custom header actions:
+ * ```jsx
+ * <AddSelect.SelectionSummaryPanel
+ *   title="Selected items"
+ *   selectedItems={items}
+ *   showCount
+ *   headerActions={
+ *     <>
+ *       <IconButton label="Filter" kind="ghost" size="sm">
+ *         <Filter />
+ *       </IconButton>
+ *       <IconButton label="Sort" kind="ghost" size="sm">
+ *         <Sort />
+ *       </IconButton>
+ *     </>
+ *   }
+ * />
+ * ```
+ *
+ * With fully custom header:
+ * ```jsx
+ * <AddSelect.SelectionSummaryPanel
+ *   selectedItems={items}
+ *   headerContent={
+ *     <div className="custom-header">
+ *       <h3>My Custom Header</h3>
+ *       <Button>Custom Action</Button>
+ *     </div>
+ *   }
  * />
  * ```
  */
@@ -91,6 +132,8 @@ const AddSelectSelectionSummary = forwardRef<
       editIconDescription = 'Edit selections',
       className,
       renderItem,
+      headerContent,
+      headerActions,
       ...rest
     },
     ref: ForwardedRef<HTMLDivElement>
@@ -103,25 +146,34 @@ const AddSelectSelectionSummary = forwardRef<
       <div className={panelClasses} ref={ref} {...rest}>
         {/* Header with title, count, and optional edit icon */}
         <div className={`${blockClass}__selection-summary-header`}>
-          <p className={`${blockClass}__selection-summary-title`}>{title}</p>
-          {showCount && (
-            <Tag type="gray" size="sm">
-              {selectedItems.length}
-            </Tag>
-          )}
-          <div className={`${blockClass}__selection-summary-header-actions`}>
-            {showEditIcon && onEdit && (
-              <IconButton
-                label={editIconDescription}
-                onClick={onEdit}
-                kind="ghost"
-                size="sm"
-                className={`${blockClass}__selection-summary-edit-button`}
+          {headerContent || (
+            <>
+              <p className={`${blockClass}__selection-summary-title`}>
+                {title}
+              </p>
+              {showCount && (
+                <Tag type="gray" size="sm">
+                  {selectedItems.length}
+                </Tag>
+              )}
+              <div
+                className={`${blockClass}__selection-summary-header-actions`}
               >
-                <Edit size={16} />
-              </IconButton>
-            )}
-          </div>
+                {showEditIcon && onEdit && (
+                  <IconButton
+                    label={editIconDescription}
+                    onClick={onEdit}
+                    kind="ghost"
+                    size="sm"
+                    className={`${blockClass}__selection-summary-edit-button`}
+                  >
+                    <Edit size={16} />
+                  </IconButton>
+                )}
+                {headerActions}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Body content */}
@@ -171,6 +223,8 @@ AddSelectSelectionSummary.propTypes = {
   className: PropTypes.string,
   editIconDescription: PropTypes.string,
   emptyState: PropTypes.node,
+  headerActions: PropTypes.node,
+  headerContent: PropTypes.node,
   /**@ts-ignore */
   onEdit: PropTypes.func,
   /**@ts-ignore */

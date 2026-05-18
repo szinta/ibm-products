@@ -1028,3 +1028,200 @@ export const WithSubHeaderActions = () => {
     </AddSelect>
   );
 };
+
+/**
+ * Selection Summary with Header Actions
+ *
+ * This example demonstrates the `headerActions` prop which allows you to add
+ * custom actions alongside the edit icon in the SelectionSummary header.
+ */
+export const SelectionSummaryWithHeaderActions = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [sortBy, setSortBy] = useState<'title' | 'id'>('title');
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  const selectedItemsArray = simpleItems.filter((item) =>
+    selectedItems.has(item.id)
+  );
+
+  // Sort selected items
+  const sortedSelectedItems = [...selectedItemsArray].sort((a, b) => {
+    return a[sortBy].localeCompare(b[sortBy]);
+  });
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="All items"
+        globalSearchLabel="Search"
+        itemCount={simpleItems.length}
+      >
+        <AddSelect.Content layout="horizontal">
+          <AddSelect.Column
+            title="Available items"
+            itemCount={simpleItems.length}
+          >
+            {simpleItems.map((item) => (
+              <AddSelect.Row
+                key={item.id}
+                itemId={item.id}
+                title={item.title}
+                subtitle={item.subtitle}
+                value={item.value}
+              />
+            ))}
+          </AddSelect.Column>
+        </AddSelect.Content>
+      </AddSelect.Body>
+      <AddSelect.SelectionSummary
+        title="Selected items"
+        selectedItems={sortedSelectedItems}
+        showCount
+        showEditIcon
+        onEdit={() => console.log('Edit clicked')}
+        headerActions={
+          <>
+            <Button
+              kind="ghost"
+              size="sm"
+              hasIconOnly
+              iconDescription="Sort"
+              tooltipPosition="bottom"
+              onClick={() => setSortBy(sortBy === 'title' ? 'id' : 'title')}
+            >
+              <ArrowsVertical />
+            </Button>
+            <Button
+              kind="ghost"
+              size="sm"
+              onClick={() => setSelectedItems(new Set())}
+              disabled={selectedItems.size === 0}
+            >
+              Clear all
+            </Button>
+          </>
+        }
+      />
+    </AddSelect>
+  );
+};
+
+/**
+ * Selection Summary with Custom Header
+ *
+ * This example demonstrates the `headerContent` prop which allows you to
+ * completely replace the default header with custom content.
+ */
+export const SelectionSummaryWithCustomHeader = () => {
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+
+  const handleItemSelect = (itemId: string, selected: boolean) => {
+    const newSelected = new Set(selectedItems);
+    if (selected) {
+      newSelected.add(itemId);
+    } else {
+      newSelected.delete(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  const selectedItemsArray = simpleItems.filter((item) =>
+    selectedItems.has(item.id)
+  );
+
+  const handleExport = () => {
+    console.log('Exporting:', selectedItemsArray);
+  };
+
+  return (
+    <AddSelect
+      multi
+      selectedItems={selectedItems}
+      onItemSelect={handleItemSelect}
+    >
+      <AddSelect.Body
+        itemsLabel="All items"
+        globalSearchLabel="Search"
+        itemCount={simpleItems.length}
+      >
+        <AddSelect.Content layout="horizontal">
+          <AddSelect.Column
+            title="Available items"
+            itemCount={simpleItems.length}
+          >
+            {simpleItems.map((item) => (
+              <AddSelect.Row
+                key={item.id}
+                itemId={item.id}
+                title={item.title}
+                subtitle={item.subtitle}
+                value={item.value}
+              />
+            ))}
+          </AddSelect.Column>
+        </AddSelect.Content>
+      </AddSelect.Body>
+      <AddSelect.SelectionSummary
+        selectedItems={selectedItemsArray}
+        headerContent={
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '1rem',
+              borderBottom: '1px solid #e0e0e0',
+            }}
+          >
+            <div>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}>
+                My Custom Selection Header
+              </h3>
+              <p
+                style={{
+                  margin: '0.25rem 0 0',
+                  fontSize: '0.875rem',
+                  color: '#525252',
+                }}
+              >
+                {selectedItems.size} item{selectedItems.size !== 1 ? 's' : ''}{' '}
+                selected
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <Button
+                size="sm"
+                kind="tertiary"
+                onClick={handleExport}
+                disabled={selectedItems.size === 0}
+              >
+                Export
+              </Button>
+              <Button
+                size="sm"
+                kind="ghost"
+                onClick={() => setSelectedItems(new Set())}
+                disabled={selectedItems.size === 0}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
+        }
+      />
+    </AddSelect>
+  );
+};
