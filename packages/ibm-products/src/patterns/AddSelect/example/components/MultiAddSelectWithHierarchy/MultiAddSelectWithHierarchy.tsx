@@ -119,33 +119,55 @@ export interface MultiAddSelectWithHierarchyProps {
    */
   columnTitle?: string;
   /**
+   * Root breadcrumb title
+   */
+  rootBreadcrumbTitle?: string;
+  /**
    * Optional class name
    */
   className?: string;
 }
 
 /**
- * Recursive Column Component
- * Automatically generates columns side-by-side as user navigates hierarchy
+ * Navigation level interface for tracking hierarchy
+ */
+interface NavigationLevel {
+  items: AddSelectItem[];
+  parentId: string;
+  parentTitle: string;
+}
+
+/**
+ * Controlled Column Component
+ * Renders a single column with items, controlled by parent state
  */
 interface ColumnProps {
   items: AddSelectItem[];
   onShowInfo?: (itemId: string) => void;
   columnSearchPlaceholder?: string;
-  columnTitle?: string;
+  columnTitle: string;
   level: number;
   dataManager: AddSelectData;
+  onNavigate?: (
+    itemId: string,
+    title: string,
+    children: AddSelectItem[]
+  ) => void;
+  selectedItems: Set<string>;
+  onSelectAll?: (itemIds: string[], selected: boolean) => void;
 }
 
-const RecursiveColumn: React.FC<ColumnProps> = ({
+const ControlledColumn: React.FC<ColumnProps> = ({
   items,
   onShowInfo,
   columnSearchPlaceholder = 'Find',
   columnTitle,
   level,
   dataManager,
+  onNavigate,
+  selectedItems,
+  onSelectAll,
 }) => {
-  const [activeParentId, setActiveParentId] = useState<string | null>(null);
   const [columnSearchTerm, setColumnSearchTerm] = useState('');
 
   // Filter items based on column search
@@ -164,66 +186,63 @@ const RecursiveColumn: React.FC<ColumnProps> = ({
     });
   }, [items, columnSearchTerm]);
 
-  // Get children of active parent
-  const activeParentChildren = useMemo(() => {
-    if (!activeParentId) return null;
-    const parent = items.find((item) => item.id === activeParentId);
-    return parent?.children?.entries || null;
-  }, [activeParentId, items]);
+  // Check if all items in this column are selected
+  const allSelected = useMemo(() => {
+    if (filteredItems.length === 0) return false;
+    return filteredItems.every((item) => selectedItems.has(item.id));
+  }, [filteredItems, selectedItems]);
 
   const handleColumnSearch = (term: string) => {
     setColumnSearchTerm(term);
   };
 
-  // Create a custom navigation handler for this column
+  // Handle navigation to children
   const handleNavigate = (itemId: string, title: string, parentId: string) => {
-    setActiveParentId(itemId);
+    const parent = items.find((item) => item.id === itemId);
+    const children = parent?.children?.entries || [];
+
+    if (children.length > 0) {
+      onNavigate?.(itemId, title, children);
+    }
   };
 
-  const title = columnTitle || `Level ${level}`;
+  // Handle select all for this column
+  const handleSelectAll = (checked: boolean) => {
+    const itemIds = filteredItems.map((item) => item.id);
+    onSelectAll?.(itemIds, checked);
+  };
 
   return (
-    <>
-      <AddSelect.Column
-        title={title}
-        searchPlaceholder={columnSearchPlaceholder}
-        onSearch={handleColumnSearch}
-        itemCount={filteredItems.length}
-        multi={true}
-        onNavigate={handleNavigate}
-      >
-        {filteredItems.map((item) => {
-          const hasChildren =
-            item.children?.entries && item.children.entries.length > 0;
-          return (
-            <AddSelect.Row
-              key={item.id}
-              itemId={item.id}
-              title={item.title || ''}
-              subtitle={item.subtitle}
-              value={item.value || ''}
-              icon={item.icon}
-              disabled={item.disabled}
-              hasChildren={hasChildren}
-              hasInfoPanel={!!item.meta}
-              onInfoPanelClick={onShowInfo}
-            />
-          );
-        })}
-      </AddSelect.Column>
-
-      {/* Recursively render next column if there are children */}
-      {activeParentChildren && activeParentChildren.length > 0 && (
-        <RecursiveColumn
-          key={activeParentId}
-          items={activeParentChildren}
-          onShowInfo={onShowInfo}
-          columnSearchPlaceholder={columnSearchPlaceholder}
-          level={level + 1}
-          dataManager={dataManager}
-        />
-      )}
-    </>
+    <AddSelect.Column
+      title={columnTitle}
+      searchPlaceholder={columnSearchPlaceholder}
+      onSearch={handleColumnSearch}
+      itemCount={filteredItems.length}
+      multi={true}
+      onNavigate={handleNavigate}
+      showSelectAll={true}
+      allSelected={allSelected}
+      onSelectAll={handleSelectAll}
+    >
+      {filteredItems.map((item) => {
+        const hasChildren =
+          item.children?.entries && item.children.entries.length > 0;
+        return (
+          <AddSelect.Row
+            key={item.id}
+            itemId={item.id}
+            title={item.title || ''}
+            subtitle={item.subtitle}
+            value={item.value || ''}
+            icon={item.icon}
+            disabled={item.disabled}
+            hasChildren={hasChildren}
+            hasInfoPanel={!!item.meta}
+            onInfoPanelClick={onShowInfo}
+          />
+        );
+      })}
+    </AddSelect.Column>
   );
 };
 
@@ -254,6 +273,7 @@ export const MultiAddSelectWithHierarchy = forwardRef<
       successNotificationSubtitle = '{count} item{plural} added',
       columnSearchPlaceholder = 'Find',
       columnTitle,
+      rootBreadcrumbTitle = 'Items',
       className,
       ...rest
     },
@@ -272,6 +292,14 @@ export const MultiAddSelectWithHierarchy = forwardRef<
       show: boolean;
     }>({ item: null, show: false });
 
+    // Navigation state for breadcrumbs and column management
+    const [navigationLevels, setNavigationLevels] = useState<NavigationLevel[]>(
+      []
+    );
+    const [breadcrumbPath, setBreadcrumbPath] = useState<
+      Array<{ id: string; title: string }>
+    >([{ id: 'root', title: rootBreadcrumbTitle }]);
+
     // Calculate button size based on screen size
     const smMediaQuery = `(max-width: ${breakpoints.md.width})`;
     const isSm = useMatchMedia(smMediaQuery);
@@ -289,8 +317,10 @@ export const MultiAddSelectWithHierarchy = forwardRef<
         setSelectedIds(new Set());
         setSearchTerm('');
         setInfoPanel({ item: null, show: false });
+        setNavigationLevels([]);
+        setBreadcrumbPath([{ id: 'root', title: rootBreadcrumbTitle }]);
       }
-    }, [open]);
+    }, [open, rootBreadcrumbTitle]);
 
     // Handle item selection
     const handleItemSelect = (
@@ -311,6 +341,23 @@ export const MultiAddSelectWithHierarchy = forwardRef<
       setSelectedIds(newSelectedIds);
     };
 
+    // Handle select all for a column
+    const handleSelectAll = (itemIds: string[], selected: boolean) => {
+      const newSelectedIds = new Set(selectedIds);
+
+      itemIds.forEach((itemId) => {
+        if (selected) {
+          newSelectedIds.add(itemId);
+          dataManager.setSelectedItems(itemId, true);
+        } else {
+          newSelectedIds.delete(itemId);
+          dataManager.setSelectedItems(itemId, false);
+        }
+      });
+
+      setSelectedIds(newSelectedIds);
+    };
+
     // Handle global search
     const handleGlobalSearch = (term: string) => {
       setSearchTerm(term);
@@ -322,9 +369,47 @@ export const MultiAddSelectWithHierarchy = forwardRef<
           searchFields: ['title', 'value', 'subtitle'],
         });
         setCurrentItems(results);
+        // Clear navigation when searching
+        setNavigationLevels([]);
       } else {
         // Reset to root items
         setCurrentItems(items);
+        setNavigationLevels([]);
+        setBreadcrumbPath([{ id: 'root', title: rootBreadcrumbTitle }]);
+      }
+    };
+
+    // Handle navigation to child level
+    const handleNavigateToChild = (
+      itemId: string,
+      title: string,
+      children: AddSelectItem[]
+    ) => {
+      // Add new level to navigation
+      setNavigationLevels((prev) => [
+        ...prev,
+        {
+          items: children,
+          parentId: itemId,
+          parentTitle: title,
+        },
+      ]);
+
+      // Update breadcrumb path
+      setBreadcrumbPath((prev) => [...prev, { id: itemId, title }]);
+    };
+
+    // Handle breadcrumb click to navigate back
+    const handleBreadcrumbClick = (index: number) => {
+      if (index === 0) {
+        // Navigate back to root
+        setNavigationLevels([]);
+        setBreadcrumbPath([{ id: 'root', title: rootBreadcrumbTitle }]);
+      } else {
+        // Navigate to specific level (index - 1 because root is index 0)
+        const targetLevelIndex = index - 1;
+        setNavigationLevels((prev) => prev.slice(0, targetLevelIndex + 1));
+        setBreadcrumbPath((prev) => prev.slice(0, index + 1));
       }
     };
 
@@ -414,17 +499,41 @@ export const MultiAddSelectWithHierarchy = forwardRef<
                   searchResultsTitle={searchResultsTitle}
                   itemCount={currentItems.length}
                   onSearch={handleGlobalSearch}
+                  path={searchTerm ? [] : breadcrumbPath}
+                  onBreadcrumbClick={handleBreadcrumbClick}
                 >
                   <AddSelect.Content layout="horizontal">
                     {currentItems.length > 0 ? (
-                      <RecursiveColumn
-                        items={currentItems}
-                        onShowInfo={handleShowInfo}
-                        columnSearchPlaceholder={columnSearchPlaceholder}
-                        columnTitle={columnTitle}
-                        level={1}
-                        dataManager={dataManager}
-                      />
+                      <>
+                        {/* First column - root level */}
+                        <ControlledColumn
+                          items={currentItems}
+                          onShowInfo={handleShowInfo}
+                          columnSearchPlaceholder={columnSearchPlaceholder}
+                          columnTitle={columnTitle || itemsLabel}
+                          level={1}
+                          dataManager={dataManager}
+                          onNavigate={handleNavigateToChild}
+                          selectedItems={selectedIds}
+                          onSelectAll={handleSelectAll}
+                        />
+
+                        {/* Additional columns based on navigation levels */}
+                        {navigationLevels.map((navLevel, index) => (
+                          <ControlledColumn
+                            key={`${navLevel.parentId}-${index}`}
+                            items={navLevel.items}
+                            onShowInfo={handleShowInfo}
+                            columnSearchPlaceholder={columnSearchPlaceholder}
+                            columnTitle={navLevel.parentTitle}
+                            level={index + 2}
+                            dataManager={dataManager}
+                            onNavigate={handleNavigateToChild}
+                            selectedItems={selectedIds}
+                            onSelectAll={handleSelectAll}
+                          />
+                        ))}
+                      </>
                     ) : (
                       <div className={`${blockClass}__no-results`}>
                         <h4>{noResultsTitle}</h4>
