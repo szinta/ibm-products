@@ -72,6 +72,10 @@ export interface AddSelectColumnProps {
    */
   onSelectAll?: (checked: boolean) => void;
   /**
+   * Callback when navigating to children
+   */
+  onNavigate?: (itemId: string, title: string, parentId: string) => void;
+  /**
    * Optional class name
    */
   className?: string;
@@ -91,11 +95,13 @@ const AddSelectColumn = forwardRef<HTMLDivElement, AddSelectColumnProps>(
       itemCount = 0,
       allSelected = false,
       onSelectAll,
+      onNavigate,
       className,
       ...rest
     },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
+    const parentContext = React.useContext(AddSelectContext);
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,8 +119,15 @@ const AddSelectColumn = forwardRef<HTMLDivElement, AddSelectColumnProps>(
 
     const columnClasses = cx(`${blockClass}-column`, className);
 
+    // Merge parent context with column-specific onNavigate
+    const columnContext = {
+      ...parentContext,
+      multi,
+      onNavigate,
+    };
+
     return (
-      <AddSelectContext.Provider value={{ multi }}>
+      <AddSelectContext.Provider value={columnContext}>
         <div className={columnClasses} ref={ref} {...rest}>
           {/* Search with optional actions */}
           <div
@@ -192,6 +205,8 @@ AddSelectColumn.propTypes = {
   className: PropTypes.string,
   itemCount: PropTypes.number,
   multi: PropTypes.bool,
+  /**@ts-ignore */
+  onNavigate: PropTypes.func,
   /**@ts-ignore */
   onSearch: PropTypes.func,
   /**@ts-ignore */

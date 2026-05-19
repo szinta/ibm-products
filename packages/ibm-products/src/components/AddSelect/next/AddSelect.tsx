@@ -50,10 +50,6 @@ export interface AddSelectProps {
    */
   onItemSelect?: (itemId: string, selected: boolean, value: string) => void;
   /**
-   * Callback when navigating to children
-   */
-  onNavigate?: (itemId: string, title: string, parentId: string) => void;
-  /**
    * Set of selected item IDs
    */
   selectedItems?: Set<string>;
@@ -102,7 +98,6 @@ export const AddSelect = forwardRef<HTMLDivElement, AddSelectProps>(
       className,
       multi = false,
       onItemSelect,
-      onNavigate,
       selectedItems,
       ...rest
     },
@@ -113,7 +108,6 @@ export const AddSelect = forwardRef<HTMLDivElement, AddSelectProps>(
         value={{
           multi,
           onItemSelect,
-          onNavigate,
           selectedItems,
         }}
       >
@@ -131,8 +125,6 @@ AddSelect.propTypes = {
   multi: PropTypes.bool,
   /**@ts-ignore */
   onItemSelect: PropTypes.func,
-  /**@ts-ignore */
-  onNavigate: PropTypes.func,
   /**@ts-ignore */
   selectedItems: PropTypes.instanceOf(Set),
 };

@@ -147,7 +147,6 @@ const RecursiveColumn: React.FC<ColumnProps> = ({
 }) => {
   const [activeParentId, setActiveParentId] = useState<string | null>(null);
   const [columnSearchTerm, setColumnSearchTerm] = useState('');
-  const parentContext = useContext(AddSelectContext);
 
   // Filter items based on column search
   const filteredItems = useMemo(() => {
@@ -183,20 +182,15 @@ const RecursiveColumn: React.FC<ColumnProps> = ({
 
   const title = columnTitle || `Level ${level}`;
 
-  // Provide custom context with this column's navigation handler
-  const columnContext = {
-    ...parentContext,
-    onNavigate: handleNavigate,
-  };
-
   return (
-    <AddSelectContext.Provider value={columnContext}>
+    <>
       <AddSelect.Column
         title={title}
         searchPlaceholder={columnSearchPlaceholder}
         onSearch={handleColumnSearch}
         itemCount={filteredItems.length}
         multi={true}
+        onNavigate={handleNavigate}
       >
         {filteredItems.map((item) => {
           const hasChildren =
@@ -229,7 +223,7 @@ const RecursiveColumn: React.FC<ColumnProps> = ({
           dataManager={dataManager}
         />
       )}
-    </AddSelectContext.Provider>
+    </>
   );
 };
 
