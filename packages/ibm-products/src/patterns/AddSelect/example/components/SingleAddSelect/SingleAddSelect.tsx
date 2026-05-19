@@ -330,5 +330,3 @@ SingleAddSelect.propTypes = {
 };
 
 SingleAddSelect.displayName = 'SingleAddSelect';
-
-// Made with Bob

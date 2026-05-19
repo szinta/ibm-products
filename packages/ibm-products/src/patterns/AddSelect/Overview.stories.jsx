@@ -6,12 +6,13 @@
  */
 
 import React from 'react';
+import DocsPage from './Overview.mdx';
 
 export default {
   title: 'Patterns/Add and select/Overview',
   parameters: {
     docs: {
-      page: null,
+      page: DocsPage,
     },
   },
 };
@@ -19,5 +20,3 @@ export default {
 export const Default = {
   render: () => <></>,
 };
-// This file exists solely to make Overview.mdx visible in Storybook
-// No actual stories are defined here - only the overview documentation

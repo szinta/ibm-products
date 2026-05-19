@@ -434,5 +434,3 @@ MultiAddSelect.propTypes = {
 };
 
 MultiAddSelect.displayName = 'MultiAddSelect';
-
-// Made with Bob

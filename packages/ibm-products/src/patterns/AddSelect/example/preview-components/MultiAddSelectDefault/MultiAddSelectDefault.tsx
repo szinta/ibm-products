@@ -94,5 +94,3 @@ export const MultiAddSelectDefault = () => {
     </div>
   );
 };
-
-// Made with Bob

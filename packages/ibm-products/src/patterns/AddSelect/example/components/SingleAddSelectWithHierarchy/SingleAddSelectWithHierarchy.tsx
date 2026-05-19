@@ -432,5 +432,3 @@ SingleAddSelectWithHierarchy.propTypes = {
 };
 
 SingleAddSelectWithHierarchy.displayName = 'SingleAddSelectWithHierarchy';
-
-// Made with Bob

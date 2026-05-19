@@ -63,5 +63,3 @@ export const WithHierarchy = {
 };
 
 WithHierarchy.storyName = 'With Hierarchy';
-
-// Made with Bob

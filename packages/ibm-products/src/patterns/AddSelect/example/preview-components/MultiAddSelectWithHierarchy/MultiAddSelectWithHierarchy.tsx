@@ -128,5 +128,3 @@ export const MultiAddSelectWithHierarchyPreview = () => {
     </div>
   );
 };
-
-// Made with Bob

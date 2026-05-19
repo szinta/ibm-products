@@ -84,5 +84,3 @@ export const SingleAddSelectDefaultPreview = () => {
     </div>
   );
 };
-
-// Made with Bob
